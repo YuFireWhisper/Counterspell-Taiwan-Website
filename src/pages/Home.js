@@ -1,15 +1,15 @@
-// src/pages/Home.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useSpring, animated } from 'react-spring'; // 引入 react-spring
+import { useSpring, animated } from 'react-spring';
 
 function Home() {
     const [navbarHeight, setNavbarHeight] = useState(0);
     const [firstPageHeight, setFirstPageHeight] = useState(0);
+    const [contentHeight, setContentHeight] = useState(0);
     const firstPageRef = useRef(null);
+    const contentRef = useRef(null);
 
-    // 以下是頁面的內容，後期應該要轉為使用資料庫
+    // 頁面內容
     const eventName = 'Counterspell Taiwan';
     const eventDescriptionText = "全台第一場由青少年為青少年舉辦的黑客松";
     const hackathonInfoTitleText = "甚麼是黑客松?";
@@ -19,42 +19,43 @@ function Home() {
     const scheduleTitleText = "活動時間表";
 
     useEffect(() => {
-        // 获取导航栏高度
         const navbar = document.querySelector('nav');
         if (navbar) {
             setNavbarHeight(navbar.offsetHeight);
         }
 
-        // 获取 FirstPage 高度
-        const updateFirstPageHeight = () => {
+        const updateHeights = () => {
             if (firstPageRef.current) {
                 setFirstPageHeight(firstPageRef.current.offsetHeight);
             }
+            if (contentRef.current) {
+                setContentHeight(contentRef.current.offsetHeight);
+            }
         };
 
-        updateFirstPageHeight();
+        updateHeights();
 
         const handleResize = () => {
             if (navbar) {
                 setNavbarHeight(navbar.offsetHeight);
             }
-            updateFirstPageHeight();
+            updateHeights();
         };
 
         window.addEventListener('resize', handleResize);
 
-        // 清理事件监听器
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
 
-    // 使用 react-spring 创建滚动阻尼效果
     const [{ scrollY }, set] = useSpring(() => ({ scrollY: 0 }));
 
     useEffect(() => {
         const handleScroll = () => {
-            set({ scrollY: window.scrollY });
+            const maxScroll = contentHeight - window.innerHeight + firstPageHeight + navbarHeight;
+            const currentScroll = Math.min(window.scrollY, maxScroll);
+            set({ scrollY: currentScroll });
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -62,7 +63,7 @@ function Home() {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [set]);
+    }, [set, contentHeight, firstPageHeight, navbarHeight]);
 
     return (
         <HomePageContent>
@@ -71,8 +72,9 @@ function Home() {
                 <EventDescription>{eventDescriptionText}</EventDescription>
             </FirstPage>
             <animated.div
+                ref={contentRef}
                 style={{
-                    transform: scrollY.to(y => `translateY(${y * -0.5}px)`),
+                    transform: scrollY.to(y => `translateY(${Math.max(0, y * -0.5)}px)`),
                     position: 'relative',
                     zIndex: 2,
                     marginTop: `calc(${firstPageHeight}px + ${navbarHeight}px)`,
@@ -129,9 +131,8 @@ function Home() {
     );
 }
 
-// 以下是樣式設定
+// 樣式設定
 const HomePageContent = styled.div`
-    /* 使整个页面可滚动 */
     min-height: 100vh;
     overflow-y: auto;
     position: relative;
@@ -186,7 +187,6 @@ const ScheduleSection = styled.div`
 `;
 
 const EventName = styled.h1`
-    /* 字體設置 */
     @font-face {
         font-family: 'Audiowide-Regular';
         src: url('/fonts/Audiowide-Regular.ttf?v=1') format('truetype');
@@ -203,7 +203,6 @@ const EventName = styled.h1`
 `;
 
 const EventDescription = styled.p`
-    /* 字體設置 */
     @font-face {
         font-family: 'Noto Sans TC';
         src: url('/fonts/NotoSansTC-Regular.ttf') format('truetype');
