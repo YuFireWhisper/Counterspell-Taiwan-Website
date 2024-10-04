@@ -8,7 +8,8 @@ function Home() {
     const [navbarHeight, setNavbarHeight] = useState(0);
 
     // 以下是頁面的內容，後期應該要轉為使用資料庫
-    const homePageTitle = 'Counterspell Taiwan';
+    const eventName = 'Counterspell Taiwan';
+    const eventDescriptionText = "全台第一場由青少年為青少年舉辦的黑客松";
     
     useEffect(() => {
         // 查找導航欄元素
@@ -35,25 +36,58 @@ function Home() {
 
     return (
         <HomePageContent navbarHeight={navbarHeight}>
-            <HomePageTitle>{ homePageTitle }</HomePageTitle>
+            <EventName>{ eventName }</EventName>
+            <EventDescription>{ eventDescriptionText }</EventDescription>
         </HomePageContent>
     )
 }
 
-const HomePageTitle = styled.h1`
-    font-size: 48px;
-    color: black;
-    font-family: 'PressStart2P-Regular', sans-serif;
-    font-weight: bold;
-    text-align: left;
+
+// 以下是樣式設定
+const HomePageContent = styled.div`
+    display: grid;
+    grid-template-columns: 200px 700px 1fr;
+    grid-template-rows: 100px 110px 90px 1fr;
+    grid-template-areas:
+        ". . ."
+        ". eventName ."
+        ". eventDescription .";
+    gap: px;
+    height: calc(100vh - ${props => props.navbarHeight}px);
+    padding-top: ${props => props.navbarHeight}px;
 `;
 
-const HomePageContent = styled.div`
-    background-size: cover;
-    padding-top: ${props => `${props.navbarHeight}px`};
-    margin: 0 auto;
-    padding-left: 50px;
-    padding-right: 20px;
+const EventName = styled.h1`
+    grid-area: eventName;
+    @font-face {
+        font-family: 'Audiowide-Regular';
+        src: url('/fonts/Audiowide-Regular.ttf?v=1') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    font-family: 'Audiowide-Regular';
+    font-size: 60px;
+    color: black;
+    white-space: pre-line;
+    display: grid;
+    align-items: start;
+`;
+
+const EventDescription = styled.p`
+    @font-face {
+        font-family: 'Noto Sans TC';
+        src: url('/fonts/NotoSansTC-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    font-family: 'Noto Sans TC';
+    font-size: 25px;
+    grid-area: eventDescription;
+    display: grid;
+    align-items: start;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+    width: 75%;
 `;
 
 export default Home;
