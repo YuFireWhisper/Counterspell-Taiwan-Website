@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useSpring, animated, config } from '@react-spring/web';
-import { Calendar, Users, Award, Briefcase, Mail, ChevronDown } from 'lucide-react';
-import { useInView } from 'react-intersection-observer'; // Install this package
+import { Calendar, Users, Award, Briefcase, Mail, ChevronDown, HelpCircle, Phone } from 'lucide-react';
+import { useInView } from 'react-intersection-observer'; // Ensure this package is installed
+import LocomotiveScroll from 'locomotive-scroll';
+import 'locomotive-scroll/dist/locomotive-scroll.css';
 
 import content from '../content';
 
@@ -12,29 +14,27 @@ import content from '../content';
 
 // Global Styles
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Audiowide';
+    src: url('/fonts/Audiowide-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
   *, *::before, *::after {
     box-sizing: border-box;
   }
   body {
     margin: 0;
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll; /* Enabled vertical scrolling */
+    overflow: hidden; /* Prevent default scrolling */
     height: 100%;
-    scroll-behavior: smooth; /* Smooth scrolling */
+    font-family: 'Noto Sans TC', sans-serif;
   }
   html {
     height: 100%;
   }
 `;
 
-// Container for the Home Page
-const HomeContainer = styled.div`
-  position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
-`;
-
-// Parallax Background
+// Parallax Background (Fixed, below Hero)
 const ParallaxBackground = styled.div`
   position: fixed;
   top: 0;
@@ -46,7 +46,7 @@ const ParallaxBackground = styled.div`
   will-change: background;
 `;
 
-// Hero Section with animated opacity
+// Hero Section with animated opacity (Fixed, above Background)
 const AnimatedHero = styled(animated.div)`
   position: fixed;
   top: 0;
@@ -59,17 +59,17 @@ const AnimatedHero = styled(animated.div)`
   align-items: center;
   text-align: center;
   color: white;
-  z-index: -1;
-  will-change: opacity, transform;
+  z-index: 0; /* Positioned above background but below content */
+  will-change: opacity;
 `;
 
-// Animated Headings with dynamic transform
+// Animated Headings
 const AnimatedH1 = styled(animated.h1)`
   font-family: 'Audiowide', sans-serif;
   font-size: 4rem;
   margin-bottom: 20px;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  will-change: opacity, transform;
+  will-change: opacity;
 `;
 
 const AnimatedP = styled(animated.p)`
@@ -77,7 +77,7 @@ const AnimatedP = styled(animated.p)`
   font-size: 1.5rem;
   max-width: 600px;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  will-change: opacity, transform;
+  will-change: opacity;
 `;
 
 // Scroll Indicator with bounce animation
@@ -107,29 +107,37 @@ const ScrollIndicator = styled.div`
   }
 `;
 
+// Container for the Home Page with Locomotive Scroll
+const HomeContainer = styled.div`
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden; /* Locomotive Scroll handles scrolling */
+  z-index: 1; /* Positioned above Hero */
+`;
+
 // Content Wrapper holding all sections
 const ContentWrapper = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0;
+  position: relative; /* To ensure z-index works */
+  z-index: 1; /* Positioned above Hero */
 `;
 
 // Placeholder to push content below Hero
 const HeroPlaceholder = styled.div`
   height: 100vh;
-  scroll-snap-align: start;
 `;
 
 // Generic Section styling with backdrop and animation
 const Section = styled.section`
-  margin-bottom: 100px;
+  margin-bottom: 30px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   will-change: background, transform;
-  scroll-snap-align: start;
 `;
 
 // Section Title with icon
@@ -170,8 +178,75 @@ const ParticipantInfoSection = styled(Section)`
   background: linear-gradient(45deg, #48dbfb, #ff6b6b);
 `;
 
-const ContactSection = styled(Section)`
+// Updated Registration Section (now Registration Section)
+const RegistrationSection = styled(Section)`
   background: linear-gradient(45deg, #5f27cd, #48dbfb);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
+// Q&A Section
+const QASection = styled(Section)`
+  background: linear-gradient(45deg, #20bf6b, #0fb9b1);
+`;
+
+const QAContent = styled.div`
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  will-change: opacity, transform;
+`;
+
+const Question = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+  position: relative;
+  padding-right: 20px;
+
+  &:after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  &.active:after {
+    transform: rotate(45deg);
+  }
+`;
+
+const Answer = styled.p`
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: 20px;
+`;
+
+// Contact Information Section
+const ContactInfoSection = styled(Section)`
+  background: linear-gradient(45deg, #f8a5c2, #f7d794);
+`;
+
+const ContactInfoContent = styled.div`
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: opacity, transform;
+  gap: 15px;
+`;
+
+const ContactItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
 `;
 
 // Content Containers with animations
@@ -190,7 +265,6 @@ const InfoItem = styled.div`
   flex: 1 1 200px;
   font-size: 1.1rem;
   color: white;
-  max-width: 300px;
   will-change: opacity, transform;
   transition: transform 0.3s ease;
 
@@ -221,19 +295,18 @@ const AboutUsContent = styled.div`
 
 const GoalsContent = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 5px;
   justify-items: center;
   will-change: transform;
 `;
 
 const GoalItem = styled.div`
   background-color: rgba(255, 255, 255, 0.2);
-  padding: 25px;
+  padding: 10px;
   border-radius: 15px;
   color: white;
   transition: transform 0.3s ease;
-  max-width: 300px;
   will-change: transform, opacity;
 
   &:hover {
@@ -306,65 +379,33 @@ const RequiredItemsList = styled.ul`
   }
 `;
 
-// Contact Form Styling with animations
-const ContactForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  will-change: opacity, transform;
-
-  input,
-  textarea {
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    font-size: 1.1rem;
-    width: 100%;
-    max-width: 500px;
-    will-change: background, transform;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-
-    &::placeholder {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    &:focus {
-      background-color: rgba(255, 255, 255, 0.3);
-      outline: none;
-      transform: scale(1.02);
-    }
-  }
-`;
-
-const SubmitButton = styled.button`
+const RegistrationButton = styled(animated.button)`
   padding: 15px 30px;
-  background-color: #feca57;
-  color: #333;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Gradient from soft orange to peach */
+  color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1.2rem;
+  border-radius: 50px;
+  font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  will-change: transform;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  will-change: transform, background, box-shadow;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4); /* Softer shadow */
 
   &:hover {
-    transform: scale(1.05);
-    background-color: #ffda57;
+    transform: scale(1.08); /* More dramatic scale for hover */
+    background: linear-gradient(135deg, #feb47b, #ff7e5f); /* Reverse gradient on hover */
+    box-shadow: 0 8px 25px rgba(255, 126, 95, 0.6); /* Larger shadow on hover */
   }
-`;
 
-const FormStatus = styled.p`
-  margin-top: 10px;
-  color: #feca57;
-  font-weight: bold;
+  &:active {
+    transform: scale(1); /* Reset scale on click */
+    box-shadow: 0 3px 10px rgba(255, 126, 95, 0.3); /* Lighter shadow on click */
+  }
 `;
 
 // Navigation Dots with tooltips and animations
-const NavigationDots = ({ activeSection, sectionRefs }) => (
+const NavigationDots = ({ activeSection, sectionRefs, handleScrollTo }) => (
   <NavDotsContainer>
     {Object.keys(sectionRefs).map((section) => {
       const isActive = activeSection === section;
@@ -373,9 +414,7 @@ const NavigationDots = ({ activeSection, sectionRefs }) => (
           <NavDotComponent
             isActive={isActive}
             onClick={() => {
-              if (sectionRefs[section].current) {
-                sectionRefs[section].current.scrollIntoView({ behavior: 'smooth' });
-              }
+              handleScrollTo(sectionRefs[section]);
             }}
           />
         </Tooltip>
@@ -421,7 +460,11 @@ const formatSectionName = (section) => {
       return 'Goals';
     case 'participantInfo':
       return 'Participant Info';
-    case 'contact':
+    case 'registration':
+      return 'Register';
+    case 'qa':
+      return 'Q&A';
+    case 'contactInfo':
       return 'Contact';
     default:
       return section;
@@ -479,23 +522,24 @@ const AnimatedLiStyled = styled(animated.li)`
 // 2. SectionAnimation Component for Damping
 // --------------------------------------------
 
+
 const SectionAnimation = ({ children }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const animation = useSpring({
-    opacity: inView ? 1 : 0,
-    transform: inView ? 'translateY(0px)' : 'translateY(50px)',
-    config: { tension: 120, friction: 14 }, // Damping effect
-  });
-
-  return (
-    <animated.div ref={ref} style={animation}>
-      {children}
-    </animated.div>
-  );
+    const [ref, inView] = useInView({
+      triggerOnce: true,
+      threshold: 0.1,
+    });
+  
+    const animation = useSpring({
+      opacity: inView ? 1 : 0,
+      transform: inView ? 'translateY(0px)' : 'translateY(50px)',
+      config: { tension: 120, friction: 14 }, // Damping effect
+    });
+  
+    return (
+      <animated.div ref={ref} style={animation}>
+        {children}
+      </animated.div>
+    );
 };
 
 // --------------------------------------------
@@ -503,245 +547,269 @@ const SectionAnimation = ({ children }) => {
 // --------------------------------------------
 
 const Home = () => {
-  // 1. Define all Hooks at the top level
-  const [activeSection, setActiveSection] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [formStatus, setFormStatus] = useState('');
-  const [heroOpacity, setHeroOpacity] = useState(1);
-  const [scrollY, setScrollY] = useState(0);
-
-  const eventInfoRef = useRef(null);
-  const aboutUsRef = useRef(null);
-  const goalsRef = useRef(null);
-  const participantInfoRef = useRef(null);
-  const contactRef = useRef(null);
-
-  const sectionRefs = useMemo(
-    () => ({
-      eventInfo: eventInfoRef,
-      aboutUs: aboutUsRef,
-      goals: goalsRef,
-      participantInfo: participantInfoRef,
-      contact: contactRef,
-    }),
-    [eventInfoRef, aboutUsRef, goalsRef, participantInfoRef, contactRef]
-  );
-
-  // 2. Setup Scroll Event Listener
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
-
-      // Calculate Hero Opacity based on the first section's position
-      if (eventInfoRef.current) {
-        const rect = eventInfoRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        // Reversed opacity logic: opaque at top, transparent as you scroll down
-        const opacity = Math.min(1, Math.max(0, rect.top / windowHeight));
-        setHeroOpacity(opacity);
+    // 1. Define all Hooks at the top level
+    const [activeSection, setActiveSection] = useState(null);
+    const [heroOpacity, setHeroOpacity] = useState(1);
+    const [activeQAIndices, setActiveQAIndices] = useState({}); // New Hook
+  
+    // Refs
+    const scrollContainerRef = useRef(null);
+    const locoScroll = useRef(null);
+    const eventInfoRef = useRef(null);
+    const aboutUsRef = useRef(null);
+    const goalsRef = useRef(null);
+    const participantInfoRef = useRef(null);
+    const registrationRef = useRef(null);
+    const qaRef = useRef(null);
+    const contactInfoRef = useRef(null);
+  
+    // Memoized Section References
+    const sectionRefs = useMemo(
+      () => ({
+        eventInfo: eventInfoRef,
+        aboutUs: aboutUsRef,
+        goals: goalsRef,
+        participantInfo: participantInfoRef,
+        registration: registrationRef,
+        qa: qaRef,
+        contactInfo: contactInfoRef,
+      }),
+      [eventInfoRef, aboutUsRef, goalsRef, participantInfoRef, registrationRef, qaRef, contactInfoRef]
+    );
+  
+    // 2. Initialize Locomotive Scroll
+    useEffect(() => {
+      if (scrollContainerRef.current) {
+        locoScroll.current = new LocomotiveScroll({
+          el: scrollContainerRef.current,
+          smooth: true,
+        });
+  
+        locoScroll.current.on('scroll', (obj) => {
+          // Calculate Hero Opacity based on scrollY
+          const scrollY = obj.scroll.y;
+          const windowHeight = window.innerHeight;
+          const opacity = 1 - Math.min(scrollY / windowHeight, 1);
+          setHeroOpacity(opacity);
+  
+          // Determine Active Section
+          const scrollPosition = scrollY + windowHeight / 2;
+  
+          for (const [section, ref] of Object.entries(sectionRefs)) {
+            if (
+              ref.current &&
+              ref.current.offsetTop <= scrollPosition &&
+              ref.current.offsetTop + ref.current.offsetHeight > scrollPosition
+            ) {
+              setActiveSection(section);
+              break;
+            }
+          }
+        });
       }
-
-      // Determine Active Section
-      const scrollPosition = currentScrollY + window.innerHeight / 2;
-
-      for (const [section, ref] of Object.entries(sectionRefs)) {
-        if (
-          ref.current &&
-          ref.current.offsetTop <= scrollPosition &&
-          ref.current.offsetTop + ref.current.offsetHeight > scrollPosition
-        ) {
-          setActiveSection(section);
-          break;
+  
+      return () => {
+        if (locoScroll.current) {
+          locoScroll.current.destroy();
         }
+      };
+    }, [sectionRefs]);
+  
+    // 3. Setup a function to handle smooth scrolling using Locomotive Scroll
+    const handleScrollTo = (ref) => {
+      if (locoScroll.current && ref.current) {
+        locoScroll.current.scrollTo(ref.current);
       }
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initialize on mount
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sectionRefs]);
-
-  // 3. Initialize react-spring for Hero opacity
-  const heroSpring = useSpring({
-    opacity: heroOpacity,
-    config: config.slow,
-  });
-
-  // 4. Handle Input Changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // 5. Handle Form Submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form Submitted:', formData);
-    setFormStatus('Message Sent!');
-    setFormData({ name: '', email: '', message: '' });
-    setTimeout(() => setFormStatus(''), 3000);
-  };
-
-  // 6. Early return after Hooks
-  if (!content) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <>
-      <GlobalStyle />
-      <HomeContainer>
+  
+    // 4. Initialize react-spring for Hero opacity
+    const heroSpring = useSpring({
+      opacity: heroOpacity,
+      config: {
+        tension: 180,
+        friction: 20,
+      },
+    });
+  
+    // 5. Early return after Hooks
+    if (!content) {
+      return <div>Loading...</div>;
+    }
+  
+    // 6. Toggle Q&A Items
+    const toggleQA = (index) => {
+      setActiveQAIndices((prev) => ({
+        ...prev,
+        [index]: !prev[index],
+      }));
+    };
+  
+    return (
+      <>
+        <GlobalStyle />
+        {/* Fixed Elements Outside Scroll Container */}
         <ParallaxBackground />
-
         <AnimatedHero style={heroSpring}>
-          <AnimatedH1
-            style={{
-              transform:
-                scrollY < window.innerHeight
-                  ? 'translateY(0)'
-                  : 'translateY(-50px)',
-            }}
-          >
+          <AnimatedH1>
             {content.eventName || 'Hackathon 2024'}
           </AnimatedH1>
-          <AnimatedP
-            style={{
-              transform:
-                scrollY < window.innerHeight
-                  ? 'translateY(0)'
-                  : 'translateY(-50px)',
-            }}
-          >
+          <AnimatedP>
             {content.eventDescription || 'Innovate. Create. Revolutionize.'}
           </AnimatedP>
-          <ScrollIndicator
-            onClick={() => {
-              if (sectionRefs.eventInfo.current) {
-                sectionRefs.eventInfo.current.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-          >
+          <ScrollIndicator onClick={() => handleScrollTo(sectionRefs.eventInfo)}>
             <span>Scroll to explore</span>
             <ChevronDown size={24} />
           </ScrollIndicator>
         </AnimatedHero>
-
-        <ContentWrapper>
-          <HeroPlaceholder />
-
-          {/* Event Info Section */}
-          <EventInfoSection ref={sectionRefs.eventInfo} id="eventInfo">
-            <SectionTitle>
-              <Calendar /> Event Information
-            </SectionTitle>
-            <EventInfoContent>
-              {Object.entries(content.eventDetails || {}).map(([key, value], index) => (
-                <SectionAnimation key={key}>
-                  <InfoItem>
-                    <strong>{key}:</strong> {value}
-                  </InfoItem>
+  
+        {/* Scroll Container */}
+        <HomeContainer ref={scrollContainerRef} data-scroll-container>
+          <ContentWrapper>
+            <HeroPlaceholder />
+  
+            {/* Event Info Section */}
+            <EventInfoSection ref={sectionRefs.eventInfo} id="eventInfo" data-scroll-section>
+              <SectionTitle>
+                <Calendar /> 活動資訊
+              </SectionTitle>
+              <EventInfoContent>
+                {Object.entries(content.eventDetails || {}).map(([key, value], index) => (
+                  <SectionAnimation key={key}>
+                    <InfoItem>
+                      <strong>{key}:</strong> {value}
+                    </InfoItem>
+                  </SectionAnimation>
+                ))}
+              </EventInfoContent>
+            </EventInfoSection>
+  
+            {/* About Us Section */}
+            <AboutUsSection ref={sectionRefs.aboutUs} id="aboutUs" data-scroll-section>
+              <SectionTitle>
+                <Users /> 關於我們
+              </SectionTitle>
+              <AboutUsContent>
+                <SectionAnimation>
+                  <AnimatedP>
+                    {content.aboutUs ||
+                      'We are a team of innovators passionate about technology and its potential to change the world.'}
+                  </AnimatedP>
                 </SectionAnimation>
-              ))}
-            </EventInfoContent>
-          </EventInfoSection>
-
-          {/* About Us Section */}
-          <AboutUsSection ref={sectionRefs.aboutUs} id="aboutUs">
-            <SectionTitle>
-              <Users /> About Us
-            </SectionTitle>
-            <AboutUsContent>
-              <SectionAnimation>
-                <AnimatedP>
-                  {content.aboutUs ||
-                    'We are a team of innovators passionate about technology and its potential to change the world.'}
-                </AnimatedP>
-              </SectionAnimation>
-            </AboutUsContent>
-          </AboutUsSection>
-
-          {/* Goals Section */}
-          <GoalsSection ref={sectionRefs.goals} id="goals">
-            <SectionTitle>
-              <Award /> Event Goals
-            </SectionTitle>
-            <GoalsContent>
-              {(content.goals || []).map((goal, index) => (
-                <SectionAnimation key={index}>
-                  <GoalItem>
-                    <h3>{goal.title}</h3>
-                    <p>{goal.description}</p>
-                  </GoalItem>
+              </AboutUsContent>
+            </AboutUsSection>
+  
+            {/* Goals Section */}
+            <GoalsSection ref={sectionRefs.goals} id="goals" data-scroll-section>
+              <SectionTitle>
+                <Award /> 活動目標
+              </SectionTitle>
+              <GoalsContent>
+                {(content.goals || []).map((goal, index) => (
+                  <SectionAnimation key={index}>
+                    <GoalItem>
+                      <h3>{goal.title}</h3>
+                      <p>{goal.description}</p>
+                    </GoalItem>
+                  </SectionAnimation>
+                ))}
+              </GoalsContent>
+            </GoalsSection>
+  
+            {/* Participant Info Section */}
+            <ParticipantInfoSection ref={sectionRefs.participantInfo} id="participantInfo" data-scroll-section>
+              <SectionTitle>
+                <Briefcase /> 參與者須知
+              </SectionTitle>
+              <ParticipantInfoContent>
+                <SectionAnimation>
+                  <h3>Registration Process</h3>
+                  <p>{content.registrationProcess}</p>
                 </SectionAnimation>
-              ))}
-            </GoalsContent>
-          </GoalsSection>
-
-          {/* Participant Info Section */}
-          <ParticipantInfoSection ref={sectionRefs.participantInfo} id="participantInfo">
-            <SectionTitle>
-              <Briefcase /> Participant Information
-            </SectionTitle>
-            <ParticipantInfoContent>
+                <SectionAnimation>
+                  <h3>Required Items</h3>
+                  <RequiredItemsList>
+                    {(content.requiredItems || []).map((item, index) => (
+                      <AnimatedLiStyled key={index}>
+                        {item}
+                      </AnimatedLiStyled>
+                    ))}
+                  </RequiredItemsList>
+                </SectionAnimation>
+              </ParticipantInfoContent>
+            </ParticipantInfoSection>
+  
+            {/* Registration Section */}
+            <RegistrationSection ref={sectionRefs.registration} id="registration" data-scroll-section>
+              <SectionTitle>
+                <Mail /> 報名活動
+              </SectionTitle>
               <SectionAnimation>
-                <h3>Registration Process</h3>
-                <p>{content.registrationProcess}</p>
+                <RegistrationButton
+                  onClick={() => {
+                    if (content.registrationPath) {
+                      // Use locomotive-scroll's scrollTo if registrationPath is an anchor on the page
+                      // Otherwise, navigate directly
+                      if (content.registrationPath.startsWith('#') && sectionRefs.registration.current) {
+                        handleScrollTo(sectionRefs.registration);
+                      } else {
+                        window.location.href = content.registrationPath;
+                      }
+                    }
+                  }}
+                >
+                  開啟報名表單
+                </RegistrationButton>
               </SectionAnimation>
-              <SectionAnimation>
-                <h3>Required Items</h3>
-                <RequiredItemsList>
-                  {(content.requiredItems || []).map((item, index) => (
-                    <AnimatedLiStyled key={index}>
-                      {item}
-                    </AnimatedLiStyled>
-                  ))}
-                </RequiredItemsList>
-              </SectionAnimation>
-            </ParticipantInfoContent>
-          </ParticipantInfoSection>
-
-          {/* Contact Section */}
-          <ContactSection ref={sectionRefs.contact} id="contact">
-            <SectionTitle>
-              <Mail /> Contact Us
-            </SectionTitle>
-            <ContactForm onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-              <textarea
-                name="message"
-                placeholder="Message"
-                rows={5}
-                value={formData.message}
-                onChange={handleInputChange}
-                required
-              ></textarea>
-              <SubmitButton type="submit">Send</SubmitButton>
-              {formStatus && <FormStatus>{formStatus}</FormStatus>}
-            </ContactForm>
-          </ContactSection>
-        </ContentWrapper>
-
-        <NavigationDots activeSection={activeSection} sectionRefs={sectionRefs} />
-      </HomeContainer>
-    </>
-  );
-};
+            </RegistrationSection>
+  
+            {/* Q&A Section */}
+            <QASection ref={sectionRefs.qa} id="qa" data-scroll-section>
+              <SectionTitle>
+                <HelpCircle /> 常見問答
+              </SectionTitle>
+              <QAContent>
+                {(content.qa || []).map((qaItem, index) => (
+                  <SectionAnimation key={index}>
+                    <div>
+                      <Question
+                        className={activeQAIndices[index] ? 'active' : ''}
+                        onClick={() => toggleQA(index)}
+                      >
+                        {qaItem.question}
+                      </Question>
+                      {activeQAIndices[index] && <Answer>{qaItem.answer}</Answer>}
+                    </div>
+                  </SectionAnimation>
+                ))}
+              </QAContent>
+            </QASection>
+  
+            {/* Contact Information Section */}
+            <ContactInfoSection ref={sectionRefs.contactInfo} id="contactInfo" data-scroll-section>
+              <SectionTitle>
+                <Phone /> 聯絡資訊
+              </SectionTitle>
+              <ContactInfoContent>
+                <SectionAnimation>
+                  <ContactItem>
+                    <Mail size={24} /> <a href={`mailto:${content.contactInfo.email}`} style={{ color: 'white', textDecoration: 'none' }}>{content.contactInfo.email}</a>
+                  </ContactItem>
+                </SectionAnimation>
+                <SectionAnimation>
+                  <ContactItem>
+                    <Phone size={24} /> <a href={`https://instagram.com/${content.contactInfo.instagram}`} target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none' }}>@{content.contactInfo.instagram}</a>
+                  </ContactItem>
+                </SectionAnimation>
+              </ContactInfoContent>
+            </ContactInfoSection>
+          </ContentWrapper>
+  
+          {/* Navigation Dots */}
+          <NavigationDots activeSection={activeSection} sectionRefs={sectionRefs} handleScrollTo={handleScrollTo} />
+        </HomeContainer>
+      </>
+    );
+  };
 
 // --------------------------------------------
 // 4. Export the Home Component
