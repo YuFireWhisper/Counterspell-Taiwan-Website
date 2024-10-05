@@ -2,17 +2,17 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useSpring, animated, config } from '@react-spring/web';
 import { Calendar, Users, Award, Briefcase, Mail, ChevronDown, HelpCircle, Phone } from 'lucide-react';
-import { useInView } from 'react-intersection-observer'; // Ensure this package is installed
+import { useInView } from 'react-intersection-observer'; // 確保已安裝此套件
 import LocomotiveScroll from 'locomotive-scroll';
 import 'locomotive-scroll/dist/locomotive-scroll.css';
 
 import content from '../content';
 
 // --------------------------------------------
-// 1. Styled Components Definitions
+// 1. 定義樣式元件
 // --------------------------------------------
 
-// Global Styles
+// 全局樣式
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Audiowide';
@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 0;
-    overflow: hidden; /* Prevent default scrolling */
+    overflow: hidden; /* 防止預設滾動 */
     height: 100%;
     font-family: 'Noto Sans TC', sans-serif;
   }
@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// Parallax Background (Fixed, below Hero)
+// 固定的視差背景（位於Hero下方）
 const ParallaxBackground = styled.div`
   position: fixed;
   top: 0;
@@ -46,7 +46,7 @@ const ParallaxBackground = styled.div`
   will-change: background;
 `;
 
-// Hero Section with animated opacity (Fixed, above Background)
+// 固定的Hero區塊，帶有動畫透明度（位於背景上方）
 const AnimatedHero = styled(animated.div)`
   position: fixed;
   top: 0;
@@ -59,11 +59,11 @@ const AnimatedHero = styled(animated.div)`
   align-items: center;
   text-align: center;
   color: white;
-  z-index: 0; /* Positioned above background but below content */
+  z-index: 0; /* 位於背景上方但內容下方 */
   will-change: opacity;
 `;
 
-// Animated Headings
+// 動畫標題
 const AnimatedH1 = styled(animated.h1)`
   font-family: 'Audiowide', sans-serif;
   font-size: 4rem;
@@ -80,7 +80,7 @@ const AnimatedP = styled(animated.p)`
   will-change: opacity;
 `;
 
-// Scroll Indicator with bounce animation
+// 滾動指示器，帶有彈跳動畫
 const ScrollIndicator = styled.div`
   display: flex;
   flex-direction: column;
@@ -107,29 +107,29 @@ const ScrollIndicator = styled.div`
   }
 `;
 
-// Container for the Home Page with Locomotive Scroll
+// 使用Locomotive Scroll的首頁容器
 const HomeContainer = styled.div`
   position: relative;
   min-height: 100vh;
-  overflow: hidden; /* Locomotive Scroll handles scrolling */
-  z-index: 1; /* Positioned above Hero */
+  overflow: hidden; /* Locomotive Scroll 處理滾動 */
+  z-index: 1; /* 位於Hero上方 */
 `;
 
-// Content Wrapper holding all sections
+// 包含所有區塊的內容容器
 const ContentWrapper = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   padding: 0;
-  position: relative; /* To ensure z-index works */
-  z-index: 1; /* Positioned above Hero */
+  position: relative; /* 確保z-index生效 */
+  z-index: 1; /* 位於Hero上方 */
 `;
 
-// Placeholder to push content below Hero
+// 占位符，用於將內容推至Hero下方
 const HeroPlaceholder = styled.div`
   height: 100vh;
 `;
 
-// Generic Section styling with backdrop and animation
+// 通用區塊樣式，帶有背景和動畫
 const Section = styled.section`
   margin-bottom: 30px;
   background-color: rgba(255, 255, 255, 0.1);
@@ -140,7 +140,7 @@ const Section = styled.section`
   will-change: background, transform;
 `;
 
-// Section Title with icon
+// 區塊標題，帶有圖示
 const SectionTitle = styled.h2`
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 2.5rem;
@@ -161,7 +161,7 @@ const SectionTitle = styled.h2`
   }
 `;
 
-// Specific Sections with unique backgrounds
+// 特定區塊，帶有獨特背景
 const EventInfoSection = styled(Section)`
   background: linear-gradient(45deg, #ff6b6b, #feca57);
 `;
@@ -178,7 +178,6 @@ const ParticipantInfoSection = styled(Section)`
   background: linear-gradient(45deg, #48dbfb, #ff6b6b);
 `;
 
-// Updated Registration Section (now Registration Section)
 const RegistrationSection = styled(Section)`
   background: linear-gradient(45deg, #5f27cd, #48dbfb);
   display: flex;
@@ -187,7 +186,6 @@ const RegistrationSection = styled(Section)`
   text-align: center;
 `;
 
-// Q&A Section
 const QASection = styled(Section)`
   background: linear-gradient(45deg, #20bf6b, #0fb9b1);
 `;
@@ -228,7 +226,7 @@ const Answer = styled.p`
   margin-left: 20px;
 `;
 
-// Contact Information Section
+// 聯絡資訊區塊
 const ContactInfoSection = styled(Section)`
   background: linear-gradient(45deg, #f8a5c2, #f7d794);
 `;
@@ -249,7 +247,7 @@ const ContactItem = styled.div`
   font-size: 1.2rem;
 `;
 
-// Content Containers with animations
+// 內容容器，帶有動畫
 const EventInfoContent = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -381,7 +379,7 @@ const RequiredItemsList = styled.ul`
 
 const RegistrationButton = styled(animated.button)`
   padding: 15px 30px;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Gradient from soft orange to peach */
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* 從柔和的橙色到桃色的漸層 */
   color: white;
   border: none;
   border-radius: 50px;
@@ -390,21 +388,21 @@ const RegistrationButton = styled(animated.button)`
   cursor: pointer;
   will-change: transform, background, box-shadow;
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4); /* Softer shadow */
+  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4); /* 更柔和的陰影 */
 
   &:hover {
-    transform: scale(1.08); /* More dramatic scale for hover */
-    background: linear-gradient(135deg, #feb47b, #ff7e5f); /* Reverse gradient on hover */
-    box-shadow: 0 8px 25px rgba(255, 126, 95, 0.6); /* Larger shadow on hover */
+    transform: scale(1.08); /* 滑鼠懸停時更明顯的縮放 */
+    background: linear-gradient(135deg, #feb47b, #ff7e5f); /* 滑鼠懸停時反轉漸層 */
+    box-shadow: 0 8px 25px rgba(255, 126, 95, 0.6); /* 滑鼠懸停時更大的陰影 */
   }
 
   &:active {
-    transform: scale(1); /* Reset scale on click */
-    box-shadow: 0 3px 10px rgba(255, 126, 95, 0.3); /* Lighter shadow on click */
+    transform: scale(1); /* 點擊時重置縮放 */
+    box-shadow: 0 3px 10px rgba(255, 126, 95, 0.3); /* 點擊時較輕的陰影 */
   }
 `;
 
-// Navigation Dots with tooltips and animations
+// 導覽點，帶有提示和動畫
 const NavigationDots = ({ activeSection, sectionRefs, handleScrollTo }) => (
   <NavDotsContainer>
     {Object.keys(sectionRefs).map((section) => {
@@ -450,25 +448,18 @@ const Tooltip = styled.div`
   }
 `;
 
+// 格式化區塊名稱
 const formatSectionName = (section) => {
-  switch (section) {
-    case 'eventInfo':
-      return 'Event Information';
-    case 'aboutUs':
-      return 'About Us';
-    case 'goals':
-      return 'Goals';
-    case 'participantInfo':
-      return 'Participant Info';
-    case 'registration':
-      return 'Register';
-    case 'qa':
-      return 'Q&A';
-    case 'contactInfo':
-      return 'Contact';
-    default:
-      return section;
-  }
+  const sectionNames = {
+    eventInfo: '活動資訊',
+    aboutUs: '關於我們',
+    goals: '活動目標',
+    participantInfo: '參與者須知',
+    registration: '報名活動',
+    qa: '常見問答',
+    contactInfo: '聯絡資訊',
+  };
+  return sectionNames[section] || section;
 };
 
 const NavDotsContainer = styled.div`
@@ -509,310 +500,304 @@ const AnimatedNavDot = styled(animated.div)`
   }
 `;
 
-// Animated Styled Components for Sections
-const AnimatedDivStyled = styled(animated.div)`
-  will-change: opacity, transform;
-`;
-
 const AnimatedLiStyled = styled(animated.li)`
   will-change: opacity, transform;
 `;
 
 // --------------------------------------------
-// 2. SectionAnimation Component for Damping
+// 2. SectionAnimation 元件，用於減震效果
 // --------------------------------------------
 
-
 const SectionAnimation = ({ children }) => {
-    const [ref, inView] = useInView({
-      triggerOnce: true,
-      threshold: 0.1,
-    });
-  
-    const animation = useSpring({
-      opacity: inView ? 1 : 0,
-      transform: inView ? 'translateY(0px)' : 'translateY(50px)',
-      config: { tension: 120, friction: 14 }, // Damping effect
-    });
-  
-    return (
-      <animated.div ref={ref} style={animation}>
-        {children}
-      </animated.div>
-    );
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const animation = useSpring({
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0px)' : 'translateY(50px)',
+    config: { tension: 120, friction: 14 }, // 減震效果
+  });
+
+  return (
+    <animated.div ref={ref} style={animation}>
+      {children}
+    </animated.div>
+  );
 };
 
 // --------------------------------------------
-// 3. Home Component Definition
+// 3. Home 元件定義
 // --------------------------------------------
 
 const Home = () => {
-    // 1. Define all Hooks at the top level
-    const [activeSection, setActiveSection] = useState(null);
-    const [heroOpacity, setHeroOpacity] = useState(1);
-    const [activeQAIndices, setActiveQAIndices] = useState({}); // New Hook
-  
-    // Refs
-    const scrollContainerRef = useRef(null);
-    const locoScroll = useRef(null);
-    const eventInfoRef = useRef(null);
-    const aboutUsRef = useRef(null);
-    const goalsRef = useRef(null);
-    const participantInfoRef = useRef(null);
-    const registrationRef = useRef(null);
-    const qaRef = useRef(null);
-    const contactInfoRef = useRef(null);
-  
-    // Memoized Section References
-    const sectionRefs = useMemo(
-      () => ({
-        eventInfo: eventInfoRef,
-        aboutUs: aboutUsRef,
-        goals: goalsRef,
-        participantInfo: participantInfoRef,
-        registration: registrationRef,
-        qa: qaRef,
-        contactInfo: contactInfoRef,
-      }),
-      [eventInfoRef, aboutUsRef, goalsRef, participantInfoRef, registrationRef, qaRef, contactInfoRef]
-    );
-  
-    // 2. Initialize Locomotive Scroll
-    useEffect(() => {
-      if (scrollContainerRef.current) {
-        locoScroll.current = new LocomotiveScroll({
-          el: scrollContainerRef.current,
-          smooth: true,
-        });
-  
-        locoScroll.current.on('scroll', (obj) => {
-          // Calculate Hero Opacity based on scrollY
-          const scrollY = obj.scroll.y;
-          const windowHeight = window.innerHeight;
-          const opacity = 1 - Math.min(scrollY / windowHeight, 1);
-          setHeroOpacity(opacity);
-  
-          // Determine Active Section
-          const scrollPosition = scrollY + windowHeight / 2;
-  
-          for (const [section, ref] of Object.entries(sectionRefs)) {
-            if (
-              ref.current &&
-              ref.current.offsetTop <= scrollPosition &&
-              ref.current.offsetTop + ref.current.offsetHeight > scrollPosition
-            ) {
-              setActiveSection(section);
-              break;
-            }
+  // 1. 在頂層定義所有 Hook
+  const [activeSection, setActiveSection] = useState(null);
+  const [heroOpacity, setHeroOpacity] = useState(1);
+  const [activeQAIndices, setActiveQAIndices] = useState({}); // 新增 Hook
+
+  // Refs
+  const scrollContainerRef = useRef(null);
+  const locoScroll = useRef(null);
+  const eventInfoRef = useRef(null);
+  const aboutUsRef = useRef(null);
+  const goalsRef = useRef(null);
+  const participantInfoRef = useRef(null);
+  const registrationRef = useRef(null);
+  const qaRef = useRef(null);
+  const contactInfoRef = useRef(null);
+
+  // 記憶化區塊參考
+  const sectionRefs = useMemo(
+    () => ({
+      eventInfo: eventInfoRef,
+      aboutUs: aboutUsRef,
+      goals: goalsRef,
+      participantInfo: participantInfoRef,
+      registration: registrationRef,
+      qa: qaRef,
+      contactInfo: contactInfoRef,
+    }),
+    [eventInfoRef, aboutUsRef, goalsRef, participantInfoRef, registrationRef, qaRef, contactInfoRef]
+  );
+
+  // 2. 初始化 Locomotive Scroll
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      locoScroll.current = new LocomotiveScroll({
+        el: scrollContainerRef.current,
+        smooth: true,
+      });
+
+      locoScroll.current.on('scroll', (obj) => {
+        // 根據 scrollY 計算 Hero 的透明度
+        const scrollY = obj.scroll.y;
+        const windowHeight = window.innerHeight;
+        const opacity = 1 - Math.min(scrollY / windowHeight, 1);
+        setHeroOpacity(opacity);
+
+        // 確定當前活躍區塊
+        const scrollPosition = scrollY + windowHeight / 2;
+
+        for (const [section, ref] of Object.entries(sectionRefs)) {
+          if (
+            ref.current &&
+            ref.current.offsetTop <= scrollPosition &&
+            ref.current.offsetTop + ref.current.offsetHeight > scrollPosition
+          ) {
+            setActiveSection(section);
+            break;
           }
-        });
-      }
-  
-      return () => {
-        if (locoScroll.current) {
-          locoScroll.current.destroy();
         }
-      };
-    }, [sectionRefs]);
-  
-    // 3. Setup a function to handle smooth scrolling using Locomotive Scroll
-    const handleScrollTo = (ref) => {
-      if (locoScroll.current && ref.current) {
-        locoScroll.current.scrollTo(ref.current);
+      });
+    }
+
+    return () => {
+      if (locoScroll.current) {
+        locoScroll.current.destroy();
       }
     };
-  
-    // 4. Initialize react-spring for Hero opacity
-    const heroSpring = useSpring({
-      opacity: heroOpacity,
-      config: {
-        tension: 180,
-        friction: 20,
-      },
-    });
-  
-    // 5. Early return after Hooks
-    if (!content) {
-      return <div>Loading...</div>;
+  }, [sectionRefs]);
+
+  // 3. 設定函式以使用 Locomotive Scroll 進行平滑滾動
+  const handleScrollTo = (ref) => {
+    if (locoScroll.current && ref.current) {
+      locoScroll.current.scrollTo(ref.current);
     }
-  
-    // 6. Toggle Q&A Items
-    const toggleQA = (index) => {
-      setActiveQAIndices((prev) => ({
-        ...prev,
-        [index]: !prev[index],
-      }));
-    };
-  
-    return (
-      <>
-        <GlobalStyle />
-        {/* Fixed Elements Outside Scroll Container */}
-        <ParallaxBackground />
-        <AnimatedHero style={heroSpring}>
-          <AnimatedH1>
-            {content.eventName || 'Hackathon 2024'}
-          </AnimatedH1>
-          <AnimatedP>
-            {content.eventDescription || 'Innovate. Create. Revolutionize.'}
-          </AnimatedP>
-          <ScrollIndicator onClick={() => handleScrollTo(sectionRefs.eventInfo)}>
-            <span>Scroll to explore</span>
-            <ChevronDown size={24} />
-          </ScrollIndicator>
-        </AnimatedHero>
-  
-        {/* Scroll Container */}
-        <HomeContainer ref={scrollContainerRef} data-scroll-container>
-          <ContentWrapper>
-            <HeroPlaceholder />
-  
-            {/* Event Info Section */}
-            <EventInfoSection ref={sectionRefs.eventInfo} id="eventInfo" data-scroll-section>
-              <SectionTitle>
-                <Calendar /> 活動資訊
-              </SectionTitle>
-              <EventInfoContent>
-                {Object.entries(content.eventDetails || {}).map(([key, value], index) => (
-                  <SectionAnimation key={key}>
-                    <InfoItem>
-                      <strong>{key}:</strong> {value}
-                    </InfoItem>
-                  </SectionAnimation>
-                ))}
-              </EventInfoContent>
-            </EventInfoSection>
-  
-            {/* About Us Section */}
-            <AboutUsSection ref={sectionRefs.aboutUs} id="aboutUs" data-scroll-section>
-              <SectionTitle>
-                <Users /> 關於我們
-              </SectionTitle>
-              <AboutUsContent>
-                <SectionAnimation>
-                  <AnimatedP>
-                    {content.aboutUs ||
-                      'We are a team of innovators passionate about technology and its potential to change the world.'}
-                  </AnimatedP>
-                </SectionAnimation>
-              </AboutUsContent>
-            </AboutUsSection>
-  
-            {/* Goals Section */}
-            <GoalsSection ref={sectionRefs.goals} id="goals" data-scroll-section>
-              <SectionTitle>
-                <Award /> 活動目標
-              </SectionTitle>
-              <GoalsContent>
-                {(content.goals || []).map((goal, index) => (
-                  <SectionAnimation key={index}>
-                    <GoalItem>
-                      <h3>{goal.title}</h3>
-                      <p>{goal.description}</p>
-                    </GoalItem>
-                  </SectionAnimation>
-                ))}
-              </GoalsContent>
-            </GoalsSection>
-  
-            {/* Participant Info Section */}
-            <ParticipantInfoSection ref={sectionRefs.participantInfo} id="participantInfo" data-scroll-section>
-              <SectionTitle>
-                <Briefcase /> 參與者須知
-              </SectionTitle>
-              <ParticipantInfoContent>
-                <SectionAnimation>
-                  <h3>Registration Process</h3>
-                  <p>{content.registrationProcess}</p>
-                </SectionAnimation>
-                <SectionAnimation>
-                  <h3>Required Items</h3>
-                  <RequiredItemsList>
-                    {(content.requiredItems || []).map((item, index) => (
-                      <AnimatedLiStyled key={index}>
-                        {item}
-                      </AnimatedLiStyled>
-                    ))}
-                  </RequiredItemsList>
-                </SectionAnimation>
-              </ParticipantInfoContent>
-            </ParticipantInfoSection>
-  
-            {/* Registration Section */}
-            <RegistrationSection ref={sectionRefs.registration} id="registration" data-scroll-section>
-              <SectionTitle>
-                <Mail /> 報名活動
-              </SectionTitle>
-              <SectionAnimation>
-                <RegistrationButton
-                  onClick={() => {
-                    if (content.registrationPath) {
-                      // Use locomotive-scroll's scrollTo if registrationPath is an anchor on the page
-                      // Otherwise, navigate directly
-                      if (content.registrationPath.startsWith('#') && sectionRefs.registration.current) {
-                        handleScrollTo(sectionRefs.registration);
-                      } else {
-                        window.location.href = content.registrationPath;
-                      }
-                    }
-                  }}
-                >
-                  開啟報名表單
-                </RegistrationButton>
-              </SectionAnimation>
-            </RegistrationSection>
-  
-            {/* Q&A Section */}
-            <QASection ref={sectionRefs.qa} id="qa" data-scroll-section>
-              <SectionTitle>
-                <HelpCircle /> 常見問答
-              </SectionTitle>
-              <QAContent>
-                {(content.qa || []).map((qaItem, index) => (
-                  <SectionAnimation key={index}>
-                    <div>
-                      <Question
-                        className={activeQAIndices[index] ? 'active' : ''}
-                        onClick={() => toggleQA(index)}
-                      >
-                        {qaItem.question}
-                      </Question>
-                      {activeQAIndices[index] && <Answer>{qaItem.answer}</Answer>}
-                    </div>
-                  </SectionAnimation>
-                ))}
-              </QAContent>
-            </QASection>
-  
-            {/* Contact Information Section */}
-            <ContactInfoSection ref={sectionRefs.contactInfo} id="contactInfo" data-scroll-section>
-              <SectionTitle>
-                <Phone /> 聯絡資訊
-              </SectionTitle>
-              <ContactInfoContent>
-                <SectionAnimation>
-                  <ContactItem>
-                    <Mail size={24} /> <a href={`mailto:${content.contactInfo.email}`} style={{ color: 'white', textDecoration: 'none' }}>{content.contactInfo.email}</a>
-                  </ContactItem>
-                </SectionAnimation>
-                <SectionAnimation>
-                  <ContactItem>
-                    <Phone size={24} /> <a href={`https://instagram.com/${content.contactInfo.instagram}`} target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none' }}>@{content.contactInfo.instagram}</a>
-                  </ContactItem>
-                </SectionAnimation>
-              </ContactInfoContent>
-            </ContactInfoSection>
-          </ContentWrapper>
-  
-          {/* Navigation Dots */}
-          <NavigationDots activeSection={activeSection} sectionRefs={sectionRefs} handleScrollTo={handleScrollTo} />
-        </HomeContainer>
-      </>
-    );
   };
 
+  // 4. 使用 react-spring 設定 Hero 的透明度動畫
+  const heroSpring = useSpring({
+    opacity: heroOpacity,
+    config: {
+      tension: 180,
+      friction: 20,
+    },
+  });
+
+  // 5. Hook 之後的早期返回
+  if (!content) {
+    return <div>Loading...</div>;
+  }
+
+  // 6. 切換 Q&A 項目
+  const toggleQA = (index) => {
+    setActiveQAIndices((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  return (
+    <>
+      <GlobalStyle />
+      {/* 固定於滾動容器外的元素 */}
+      <ParallaxBackground />
+      <AnimatedHero style={heroSpring}>
+        <AnimatedH1>
+          {content.eventName || 'Hackathon 2024'}
+        </AnimatedH1>
+        <AnimatedP>
+          {content.eventDescription || 'Innovate. Create. Revolutionize.'}
+        </AnimatedP>
+        <ScrollIndicator onClick={() => handleScrollTo(sectionRefs.eventInfo)}>
+          <span>滑動以探索</span>
+          <ChevronDown size={24} />
+        </ScrollIndicator>
+      </AnimatedHero>
+
+      {/* 滾動容器 */}
+      <HomeContainer ref={scrollContainerRef} data-scroll-container>
+        <ContentWrapper>
+          <HeroPlaceholder />
+
+          {/* 活動資訊區塊 */}
+          <EventInfoSection ref={sectionRefs.eventInfo} id="eventInfo" data-scroll-section>
+            <SectionTitle>
+              <Calendar /> 活動資訊
+            </SectionTitle>
+            <EventInfoContent>
+              {Object.entries(content.eventDetails || {}).map(([key, value]) => (
+                <SectionAnimation key={key}>
+                  <InfoItem>
+                    <strong>{key}:</strong> {value}
+                  </InfoItem>
+                </SectionAnimation>
+              ))}
+            </EventInfoContent>
+          </EventInfoSection>
+
+          {/* 關於我們區塊 */}
+          <AboutUsSection ref={sectionRefs.aboutUs} id="aboutUs" data-scroll-section>
+            <SectionTitle>
+              <Users /> 關於我們
+            </SectionTitle>
+            <AboutUsContent>
+              <SectionAnimation>
+                <AnimatedP>
+                  {content.aboutUs ||
+                    '我們是一群對技術充滿熱情，致力於改變世界的創新者。'}
+                </AnimatedP>
+              </SectionAnimation>
+            </AboutUsContent>
+          </AboutUsSection>
+
+          {/* 活動目標區塊 */}
+          <GoalsSection ref={sectionRefs.goals} id="goals" data-scroll-section>
+            <SectionTitle>
+              <Award /> 活動目標
+            </SectionTitle>
+            <GoalsContent>
+              {(content.goals || []).map((goal, index) => (
+                <SectionAnimation key={index}>
+                  <GoalItem>
+                    <h3>{goal.title}</h3>
+                    <p>{goal.description}</p>
+                  </GoalItem>
+                </SectionAnimation>
+              ))}
+            </GoalsContent>
+          </GoalsSection>
+
+          {/* 參與者須知區塊 */}
+          <ParticipantInfoSection ref={sectionRefs.participantInfo} id="participantInfo" data-scroll-section>
+            <SectionTitle>
+              <Briefcase /> 參與者須知
+            </SectionTitle>
+            <ParticipantInfoContent>
+              <SectionAnimation>
+                <h3>報名流程</h3>
+                <p>{content.registrationProcess}</p>
+              </SectionAnimation>
+              <SectionAnimation>
+                <h3>必備物品</h3>
+                <RequiredItemsList>
+                  {(content.requiredItems || []).map((item, index) => (
+                    <AnimatedLiStyled key={index}>
+                      {item}
+                    </AnimatedLiStyled>
+                  ))}
+                </RequiredItemsList>
+              </SectionAnimation>
+            </ParticipantInfoContent>
+          </ParticipantInfoSection>
+
+          {/* 報名活動區塊 */}
+          <RegistrationSection ref={sectionRefs.registration} id="registration" data-scroll-section>
+            <SectionTitle>
+              <Mail /> 報名活動
+            </SectionTitle>
+            <SectionAnimation>
+              <RegistrationButton
+                onClick={() => {
+                  if (content.registrationPath) {
+                    // 使用 locomotive-scroll 的 scrollTo 如果 registrationPath 是頁面上的錨點
+                    // 否則，直接導航
+                    if (content.registrationPath.startsWith('#') && sectionRefs.registration.current) {
+                      handleScrollTo(sectionRefs.registration);
+                    } else {
+                      window.location.href = content.registrationPath;
+                    }
+                  }
+                }}
+              >
+                開啟報名表單
+              </RegistrationButton>
+            </SectionAnimation>
+          </RegistrationSection>
+
+          {/* 常見問答區塊 */}
+          <QASection ref={sectionRefs.qa} id="qa" data-scroll-section>
+            <SectionTitle>
+              <HelpCircle /> 常見問答
+            </SectionTitle>
+            <QAContent>
+              {(content.qa || []).map((qaItem, index) => (
+                <SectionAnimation key={index}>
+                  <div>
+                    <Question
+                      className={activeQAIndices[index] ? 'active' : ''}
+                      onClick={() => toggleQA(index)}
+                    >
+                      {qaItem.question}
+                    </Question>
+                    {activeQAIndices[index] && <Answer>{qaItem.answer}</Answer>}
+                  </div>
+                </SectionAnimation>
+              ))}
+            </QAContent>
+          </QASection>
+
+          {/* 聯絡資訊區塊 */}
+          <ContactInfoSection ref={sectionRefs.contactInfo} id="contactInfo" data-scroll-section>
+            <SectionTitle>
+              <Phone /> 聯絡資訊
+            </SectionTitle>
+            <ContactInfoContent>
+              <SectionAnimation>
+                <ContactItem>
+                  <Mail size={24} /> <a href={`mailto:${content.contactInfo.email}`} style={{ color: 'white', textDecoration: 'none' }}>{content.contactInfo.email}</a>
+                </ContactItem>
+              </SectionAnimation>
+              <SectionAnimation>
+                <ContactItem>
+                  <Phone size={24} /> <a href={`https://instagram.com/${content.contactInfo.instagram}`} target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none' }}>@{content.contactInfo.instagram}</a>
+                </ContactItem>
+              </SectionAnimation>
+            </ContactInfoContent>
+          </ContactInfoSection>
+        </ContentWrapper>
+
+        {/* 導覽點 */}
+        <NavigationDots activeSection={activeSection} sectionRefs={sectionRefs} handleScrollTo={handleScrollTo} />
+      </HomeContainer>
+    </>
+  );
+};
+
 // --------------------------------------------
-// 4. Export the Home Component
+// 4. 匯出 Home 元件
 // --------------------------------------------
 
 export default Home;
