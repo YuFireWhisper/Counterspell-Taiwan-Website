@@ -8,11 +8,6 @@ export default {
     對象: "15-18歲的學生"
   },
   aboutUs: "我們是一群來自全台各地的青少年，對程式設計、設計、產品開發等領域有著濃厚的興趣。我們相信通過舉辦這次黑客松，可以為台灣的青少年科技愛好者提供一個展示才能、相互學習的平台。",
-  teamMembers: [
-    { name: "張小明", role: "活動總召", avatar: "/images/team/xiaoming.jpg", funFact: "喜歡在程式中藏彩蛋" },
-    { name: "李小華", role: "技術長", avatar: "/images/team/xiaohua.jpg", funFact: "曾經連續編程48小時" },
-    { name: "王大力", role: "設計師", avatar: "/images/team/dali.jpg", funFact: "業餘魔術師" },
-  ],
   goals: [
     {
       title: "激發創新",
