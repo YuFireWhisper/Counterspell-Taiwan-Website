@@ -1,9 +1,6 @@
-// src/components/RequiredItems.js
-
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Briefcase } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
 import content from './content';
 
 // 帶有圖標的區塊標題
@@ -60,13 +57,15 @@ const RequiredItem = styled.div`
   margin: 0 10px;
   border-radius: 15px;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   width: 200px;
   height: 100px;
   display: flex;
   flex-direction: column; 
   justify-content: center; 
   align-items: center;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(20px)')};
 
   &:hover {
     transform: translateY(-10px);
@@ -82,20 +81,49 @@ const RequiredItem = styled.div`
   }
 `;
 
+// 自定義鉤子，用於檢測滾動和視口
+const useScrollTrigger = (threshold = 0.5) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  const handleScroll = () => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const { top, bottom } = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (top <= windowHeight * threshold && bottom >= 0) {
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // 初始化檢測
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return { isVisible, elementRef };
+};
+
 const RequiredItems = () => {
+  const { isVisible, elementRef } = useScrollTrigger(0.7); // 當元素進入視口 70% 時觸發
+
   return (
-    <RequiredItemsSection>
+    <RequiredItemsSection ref={elementRef}>
       <SectionTitle>
         <Briefcase /> 必備物品
       </SectionTitle>
       <RequiredItemsContent>
         {(content.participantInfo?.requiredItems || []).map((item, index) => (
-          <SectionAnimation key={index}>
-            <RequiredItem>
-              <Briefcase size={30} />
-              <p>{item}</p>
-            </RequiredItem>
-          </SectionAnimation>
+          <RequiredItem key={index} isVisible={isVisible}>
+            <Briefcase size={30} />
+            <p>{item}</p>
+          </RequiredItem>
         ))}
       </RequiredItemsContent>
     </RequiredItemsSection>
