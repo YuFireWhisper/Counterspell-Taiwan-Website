@@ -9,8 +9,8 @@ const SectionAnimation = React.memo(({ children }) => {
     });
   
     const animation = useSpring({
-      opacity: inView ? 1 : 0,
-      transform: inView ? 'translateY(0px)' : 'translateY(50px)',
+      opacity: 1,  // 初始就設為可見
+      transform: 'translateY(0px)',
       config: { tension: 120, friction: 14 },
     });
   
