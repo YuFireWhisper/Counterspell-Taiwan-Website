@@ -22,7 +22,10 @@ import Particles from '@tsparticles/react';
 import _ from 'lodash';
 import content from '../components/content';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
+import { Section, SectionTitle } from '../components/Section';
+import Timeline from '../components/Timeline';
+import TimelineSection from '../components/TimelineSection';
+import Goals from '../components/Goal';
 
 // --------------------------------------------
 // 1. 定義 Styled Components
@@ -205,42 +208,6 @@ const ContentWrapper = styled.div`
 // 占位元素，將內容推到 Hero 下方
 const HeroPlaceholder = styled.div`
   height: 100vh;
-`;
-
-// 通用區塊樣式，帶有背景和動畫
-const Section = styled.section`
-  margin-bottom: 30px;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  will-change: background, transform;
-  transition: background 0.5s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-// 帶有圖標的區塊標題
-const SectionTitle = styled.h2`
-  font-family: 'Noto Sans TC', sans-serif;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  color: white;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  will-change: opacity, transform;
-
-  svg {
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
 `;
 
 // 活動資訊容器，使用 Flex 排列
@@ -673,60 +640,6 @@ const formatSectionName = (section) => {
   return sectionNames[section] || section;
 };
 
-// 時間軸組件
-const TimelineSection = styled(Section)`
-  background: linear-gradient(45deg, #feca57, #ff9ff3);
-  width: 100%;
-`;
-
-const TimelineContent = styled.div`
-  width: 100%;
-  max-width: 1000px;
-  position: relative;
-  padding-left: 40px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 20px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: white;
-  }
-`;
-
-const TimelineItem = styled.div`
-  position: relative;
-  margin-bottom: 30px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: -10px;
-    background-color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    top: 5px;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-    color: white;
-  }
-
-  p {
-    font-size: 1.1rem;
-    color: white;
-  }
-`;
-
 // --------------------------------------------
 // 2. SectionAnimation 組件，用於進場動畫
 // --------------------------------------------
@@ -958,17 +871,7 @@ const Home = () => {
 
           {/* 時間軸區塊 */}
           <TimelineSection ref={timelineRef} id="timeline" data-scroll-section>
-            <SectionTitle>
-              <Calendar /> 活動時程
-            </SectionTitle>
-            <TimelineContent>
-              {content.schedule.map((item, index) => (
-                <TimelineItem key={index}>
-                  <h3>{item.date}</h3>
-                  <p>{item.event}: {item.description}</p>
-                </TimelineItem>
-              ))}
-            </TimelineContent>
+            <Timeline items={content.schedule} />
           </TimelineSection>
 
           {/* 活動資訊項目 */}
@@ -1019,21 +922,7 @@ const Home = () => {
           </AboutUsSection>
 
           {/* 活動目標區塊 */}
-          <GoalsSection ref={goalsRef} id="goals" data-scroll-section>
-            <SectionTitle>
-              <Award /> 活動目標
-            </SectionTitle>
-            <GoalsContent>
-              {(content.goals || []).map((goal, index) => (
-                <SectionAnimation key={index}>
-                  <GoalItem>
-                    <h3>{goal.title}</h3>
-                    <p>{goal.description}</p>
-                  </GoalItem>
-                </SectionAnimation>
-              ))}
-            </GoalsContent>
-          </GoalsSection>
+          <Goals goals={content.goals || []} />
 
           {/* 必備物品區塊 */}
           <RequiredItemsSection ref={requiredItemsRef} id="requiredItems" data-scroll-section>
