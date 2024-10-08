@@ -1,59 +1,114 @@
 // src/components/content.js
 
+// 這個文件包含了活動的所有內容數據，可以在此處更新和管理
+
 const content = {
-    eventName: 'Hackathon 2024',
-    eventDescription: 'Innovate. Create. Revolutionize.',
-    eventDetails: {
-      date: '2024年12月1日 - 2024年12月2日',
-      location: '台北市信義區信義路五段7號',
-      organizer: 'Tech Innovators Inc.',
-      sponsors: 'Sponsor A, Sponsor B, Sponsor C',
+  eventName: 'Counterspell Taiwan',
+  eventDescription: '一起來參加我們的遊戲主題黑客松，展示你的創意與技術！',
+  eventDetails: {
+    date: '2024/11/30 - 2024/12/01',
+    location: '台北市 (具體位置待訂)',
+    organizer: 'HackIt',
+    coOrganizer: 'Hack Club',
+    sponsors: '待確認',
+  },
+  aboutUs: 'Counterspell Taiwan 是由 HackIt 主辦，Hack Club 協辦的一場專為全國各級高中（職）學生及專科學生設計的遊戲主題黑客松。活動旨在凝聚熱愛科技的青少年，共同推動台灣遊戲產業的發展。',
+  goals: [
+    {
+      title: '促進創新',
+      description: '鼓勵參賽者利用現代化工具和生成式AI，創造出獨具一格的遊戲原型。',
     },
-    aboutUs: '我們是一群對技術充滿熱情，致力於改變世界的創新者。參加我們的黑客松，與來自各地的開發者共同創造未來的解決方案。',
-    goals: [
-      {
-        title: '促進創新',
-        description: '鼓勵參與者探索新技術和創新思維，開發具有影響力的項目。',
-      },
-      {
-        title: '建立社群',
-        description: '建立一個支持和協作的技術社群，促進知識共享和合作。',
-      },
-      {
-        title: '解決挑戰',
-        description: '針對現實世界的問題提出創新的解決方案，推動社會進步。',
-      },
+    {
+      title: '增進合作',
+      description: '通過跨校、跨領域的組隊方式，促進多元交流與合作。',
+    },
+    {
+      title: '技能提升',
+      description: '提供入門工作坊與專業導師協助，確保每位參賽者都能有所收穫。',
+    },
+  ],
+  participantInfo: {
+    eligible: [
+      '全國各級高中（職）學生',
+      '專科一年級至三年級學生',
+      '非學校型態實驗教育學生',
     ],
-    participantInfo: {
-      registrationProcess: '1. 填寫線上報名表。\n2. 確認電子郵件並完成註冊。\n3. 準備所需物品並參加活動。',
-      requiredItems: [
-        '筆記型電腦',
-        '充電器',
-        '開發工具和軟件',
-        '創意和熱情',
-        '健康的零食和飲料',
-      ],
-    },
-    registrationPath: '/register', // 可以是錨點如 '#registration' 或 URL
-    qa: [
-      {
-        question: '活動需要哪些技能？',
-        answer: '無論您是初學者還是有經驗的開發者，都歡迎參加。我們鼓勵多樣性的技能組合。',
-      },
-      {
-        question: '是否有獎品？',
-        answer: '是的，我們為優勝團隊準備了豐富的獎品，包括現金獎勵和技術產品。',
-      },
-      {
-        question: '活動是否提供餐飲？',
-        answer: '我們將提供免費的午餐和點心，請您提前告知任何飲食限制。',
-      },
+    requiredItems: [
+      '筆記型電腦',
+      '充電器',
+      '個人衛生用品',
+      '個人身分證明',
+      '其他個人需求物品',
     ],
-    contactInfo: {
-      email: 'contact@hackathon2024.com',
-      instagram: 'hackathon2024',
+    registrationProcess: '請前往我們的官方網站點擊「開啟報名表單」並填寫相關資訊，即可完成報名。名額有限，請盡早報名！',
+  },
+  awards: {
+    regional: {
+      gold: 1,
+      silver: 2,
+      bronze: 3,
+      genAI: 3,
+      honorableMentions: 6,
     },
-  };
-  
-  export default content;
-  
+    global: {
+      // 未來公布全球獎項資訊
+    },
+  },
+  workshopDetails: {
+    title: '遊戲開發入門工作坊',
+    description: '活動正式開始前的線上工作坊，提供遊戲開發的基礎入門指導，教導如何利用現代化工具快速創建遊戲原型，並結合生成式AI進行創意發想。',
+    location: '待確認',
+    time: '待確認',
+    instructors: '待確認',
+    fee: '全額免費',
+    registration: '報名 Counterspell Taiwan 即可免費參加',
+    requiredItems: '待確認',
+  },
+  schedule: [
+    {
+      date: '2024/11/29',
+      event: '工作坊',
+      description: '遊戲開發入門工作坊，線上進行。',
+    },
+    {
+      date: '2024/11/30 - 2024/12/01',
+      event: '黑客松',
+      description: '兩天一夜的遊戲開發黑客松，激發創意與技術。',
+    },
+    {
+      date: '2024/12/01',
+      event: '公布地區獎項',
+      description: '在活動結束當天公布地區獎項名單。',
+    },
+    {
+      date: '2024/12/02 - 2025/01/31',
+      event: '全球獎項公布',
+      description: '活動結束一個月內，由 HackIt 公布全球獎項。',
+    },
+  ],
+  qa: [
+    {
+      question: '報名資格是什麼？',
+      answer: '全國各級高中（職）學生、專科一年級至三年級學生，以及非學校型態實驗教育學生均可參加。',
+    },
+    {
+      question: '活動是否免費？',
+      answer: '是的，參加活動完全免費，並提供豐富的獎品。',
+    },
+    {
+      question: '需攜帶哪些物品？',
+      answer: '參賽者需攜帶筆記型電腦、充電器、個人衛生用品及其他個人需求物品。具體列表將在活動前公布。',
+    },
+    {
+      question: '如何組隊？',
+      answer: '每隊2-6人，參賽者可自行組隊報名，並鼓勵跨校、跨領域組隊。',
+    },
+  ],
+  contactInfo: {
+    email: 'counterspell@hackit.tw',
+    instagram: 'hackit.tw',
+  },
+  registrationPath: '#registration', // 假設報名表單在主頁的報名區塊
+};
+
+export default content;
