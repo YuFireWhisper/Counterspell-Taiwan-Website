@@ -3,14 +3,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Award } from 'lucide-react';
-import { Section, SectionTitle } from './Section';
+import { SectionTitle } from './Section';
 import { useInView } from 'react-intersection-observer';
 import { useSpring, animated } from '@react-spring/web';
 
 // 目標內容網格
-const GoalsSection = styled(Section)`
+const GoalSection = styled.section`
   background: linear-gradient(45deg, #ff9ff3, #feca57);
-  width: 100%;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  will-change: background, transform;
+  transition: background 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 // 目標內容包裝
@@ -75,7 +84,7 @@ const SectionAnimation = React.memo(({ children }) => {
 // Goals 組件
 const Goals = ({ goals }) => {
   return (
-    <GoalsSection>
+    <GoalSection>
       <SectionTitle>
         <Award /> 活動目標
       </SectionTitle>
@@ -89,7 +98,7 @@ const Goals = ({ goals }) => {
           </SectionAnimation>
         ))}
       </GoalsContent>
-    </GoalsSection>
+    </GoalSection>
   );
 };
 

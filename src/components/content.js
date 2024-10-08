@@ -4,7 +4,7 @@
 
 const content = {
   eventName: 'Counterspell Taiwan',
-  eventDescription: '一起來參加我們的遊戲主題黑客松，展示你的創意與技術！',
+  eventDescription: '全台第一場由青少年舉辦給青少年的黑客松',
   eventDetails: {
     date: '2024/11/30 - 2024/12/01',
     location: '台北市 (具體位置待訂)',
@@ -108,7 +108,7 @@ const content = {
     email: 'counterspell@hackit.tw',
     instagram: 'hackit.tw',
   },
-  registrationPath: '#registration', // 假設報名表單在主頁的報名區塊
+  registrationPath: 'http://counterspell.hackit.tw/signup', // 假設報名表單在主頁的報名區塊
 };
 
 export default content;
