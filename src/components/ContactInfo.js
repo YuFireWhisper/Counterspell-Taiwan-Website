@@ -1,9 +1,6 @@
-// src/components/ContactInfo.js
-
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Mail, Phone } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
 import content from './content';
 
 const ContactInfoSection = styled.section`
@@ -57,6 +54,9 @@ const ContactItem = styled.div`
   align-items: center;
   gap: 10px;
   font-size: 1.2rem;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(50px)')};
+  transition: transform 0.3s ease, opacity 0.3s ease;
 
   a {
     color: white;
@@ -68,33 +68,60 @@ const ContactItem = styled.div`
   }
 `;
 
+// 自定義滾動觸發鉤子
+const useScrollTrigger = (threshold = 0.5) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  const handleScroll = () => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const { top, bottom } = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (top <= windowHeight * threshold && bottom >= 0) {
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // 初始化檢測
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return { isVisible, elementRef };
+};
+
 const ContactInfo = () => {
+  const { isVisible, elementRef } = useScrollTrigger(0.7); // 滾動到視口 70% 處觸發
+
   return (
-    <ContactInfoSection>
+    <ContactInfoSection ref={elementRef}>
       <SectionTitle>
         <Phone /> 聯絡資訊
       </SectionTitle>
       <ContactInfoContent>
-        <SectionAnimation>
-          <ContactItem>
-            <Mail size={24} />
-            <a href={`mailto:${content.contactInfo?.email || 'contact@hackathon2024.com'}`}>
-              {content.contactInfo?.email || 'contact@hackathon2024.com'}
-            </a>
-          </ContactItem>
-        </SectionAnimation>
-        <SectionAnimation>
-          <ContactItem>
-            <Phone size={24} />
-            <a
-              href={`https://instagram.com/${content.contactInfo?.instagram || 'hackathon2024'}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @{content.contactInfo?.instagram || 'hackathon2024'}
-            </a>
-          </ContactItem>
-        </SectionAnimation>
+        <ContactItem isVisible={isVisible}>
+          <Mail size={24} />
+          <a href={`mailto:${content.contactInfo?.email || 'contact@hackathon2024.com'}`}>
+            {content.contactInfo?.email || 'contact@hackathon2024.com'}
+          </a>
+        </ContactItem>
+        <ContactItem isVisible={isVisible}>
+          <Phone size={24} />
+          <a
+            href={`https://instagram.com/${content.contactInfo?.instagram || 'hackathon2024'}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @{content.contactInfo?.instagram || 'hackathon2024'}
+          </a>
+        </ContactItem>
       </ContactInfoContent>
     </ContactInfoSection>
   );

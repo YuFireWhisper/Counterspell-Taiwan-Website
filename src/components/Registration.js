@@ -1,9 +1,6 @@
-// src/components/Registration.js
-
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Mail } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
 import content from './content';
 import { animated } from '@react-spring/web';
 
@@ -55,6 +52,9 @@ const RegistrationContent = styled.div`
   p {
     font-size: 1.2rem;
     line-height: 1.6;
+    opacity: ${(props) => (props.isVisible ? 1 : 0)};
+    transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(50px)')};
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 `;
 
@@ -70,6 +70,9 @@ const RegistrationButton = styled(animated.button)`
   will-change: transform, background, box-shadow;
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(50px)')};
+  transition: transform 0.3s ease, opacity 0.3s ease;
 
   &:hover {
     transform: scale(1.08);
@@ -83,38 +86,66 @@ const RegistrationButton = styled(animated.button)`
   }
 `;
 
+// 自定義滾動觸發鉤子
+const useScrollTrigger = (threshold = 0.5) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  const handleScroll = () => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const { top, bottom } = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (top <= windowHeight * threshold && bottom >= 0) {
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // 初始化檢測
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return { isVisible, elementRef };
+};
+
 const Registration = ({ sectionRefs, handleScrollTo }) => {
+  const { isVisible, elementRef } = useScrollTrigger(0.7); // 滾動到視口 70% 處觸發
+
   return (
-    <RegistrationSection>
+    <RegistrationSection ref={elementRef}>
       <SectionTitle>
         <Mail /> 報名活動
       </SectionTitle>
-      <RegistrationContent>
-        <SectionAnimation>
-          <p>
-            {content.participantInfo?.registrationProcess ||
-              '報名流程資訊尚未更新。'}
-          </p>
-        </SectionAnimation>
+      <RegistrationContent isVisible={isVisible}>
+        <p>
+          {content.participantInfo?.registrationProcess ||
+            '報名流程資訊尚未更新。'}
+        </p>
       </RegistrationContent>
-      <SectionAnimation>
-        <RegistrationButton
-          onClick={() => {
-            if (content.registrationPath) {
-              if (
-                content.registrationPath.startsWith('#') &&
-                sectionRefs.registration.current
-              ) {
-                handleScrollTo(sectionRefs.registration);
-              } else {
-                window.location.href = content.registrationPath;
-              }
+      <RegistrationButton
+        isVisible={isVisible}
+        onClick={() => {
+          if (content.registrationPath) {
+            if (
+              content.registrationPath.startsWith('#') &&
+              sectionRefs.registration.current
+            ) {
+              handleScrollTo(sectionRefs.registration);
+            } else {
+              window.location.href = content.registrationPath;
             }
-          }}
-        >
-          開啟報名表單
-        </RegistrationButton>
-      </SectionAnimation>
+          }
+        }}
+      >
+        開啟報名表單
+      </RegistrationButton>
     </RegistrationSection>
   );
 };
