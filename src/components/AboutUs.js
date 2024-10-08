@@ -1,9 +1,6 @@
-// src/components/AboutUs.js
-
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Users } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
 import content from './content';
 
 const AboutUsSection = styled.section`
@@ -50,20 +47,52 @@ const AboutUsContent = styled.div`
   text-align: center;
   will-change: opacity, transform;
   font-size: 1.5rem;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(50px)')};
+  transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
+// 自定義滾動觸發鉤子
+const useScrollTrigger = (threshold = 0.5) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  const handleScroll = () => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const { top, bottom } = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (top <= windowHeight * threshold && bottom >= 0) {
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // 初始化檢測
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return { isVisible, elementRef };
+};
+
 const AboutUs = () => {
+  const { isVisible, elementRef } = useScrollTrigger(0.7); // 滾動到視口 70% 處觸發
+
   return (
-    <AboutUsSection>
+    <AboutUsSection ref={elementRef}>
       <SectionTitle>
         <Users /> 關於我們
       </SectionTitle>
-      <AboutUsContent>
-        <SectionAnimation>
-          <p>
-            {content.aboutUs || '我們是一群對技術充滿熱情，致力於改變世界的創新者。'}
-          </p>
-        </SectionAnimation>
+      <AboutUsContent isVisible={isVisible}>
+        <p>
+          {content.aboutUs || '我們是一群對技術充滿熱情，致力於改變世界的創新者。'}
+        </p>
       </AboutUsContent>
     </AboutUsSection>
   );
