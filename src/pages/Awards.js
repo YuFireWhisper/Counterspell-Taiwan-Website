@@ -1,9 +1,9 @@
 // src/pages/Awards.js
 
-import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import { Link } from 'react-router-dom'; // 使用 react-router-dom 進行路由
-import content from '../components/content';
+import React from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import { Link } from "react-router-dom"; // 使用 react-router-dom 進行路由
+import content from "../components/content";
 
 // 全局樣式（可重複使用或從 Home.js 中抽取）
 const GlobalStyle = createGlobalStyle`
@@ -40,7 +40,7 @@ const PageTitle = styled.h1`
   font-size: 3rem;
   text-align: center;
   margin-bottom: 40px;
-  font-family: 'Audiowide', sans-serif;
+  font-family: "Audiowide", sans-serif;
 `;
 
 // 得獎名單內容區塊
@@ -108,11 +108,26 @@ const Awards = () => {
           <AwardCategory>
             <h2>地區獎項</h2>
             <ul>
-              <li><strong>金牌：</strong>{content.awards.regional.gold || '待確認'} 組</li>
-              <li><strong>銀牌：</strong>{content.awards.regional.silver || '待確認'} 組</li>
-              <li><strong>銅牌：</strong>{content.awards.regional.bronze || '待確認'} 組</li>
-              <li><strong>GenAI 特別獎：</strong>{content.awards.regional.genAI || '待確認'} 組</li>
-              <li><strong>佳作：</strong>{content.awards.regional.honorableMentions || '待確認'} 組</li>
+              <li>
+                <strong>金牌：</strong>
+                {content.awards.regional.gold || "待確認"} 組
+              </li>
+              <li>
+                <strong>銀牌：</strong>
+                {content.awards.regional.silver || "待確認"} 組
+              </li>
+              <li>
+                <strong>銅牌：</strong>
+                {content.awards.regional.bronze || "待確認"} 組
+              </li>
+              <li>
+                <strong>GenAI 特別獎：</strong>
+                {content.awards.regional.genAI || "待確認"} 組
+              </li>
+              <li>
+                <strong>佳作：</strong>
+                {content.awards.regional.honorableMentions || "待確認"} 組
+              </li>
             </ul>
           </AwardCategory>
           <AwardCategory>

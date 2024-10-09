@@ -1,10 +1,10 @@
 // src/components/Timeline.js
 
-import React from 'react';
-import styled from 'styled-components'; // 確保引入 styled-components
-import { Calendar } from 'lucide-react';
-import SectionAnimation from './SectionAnimation'; // 引入 SectionAnimation
-import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
+import React from "react";
+import styled from "styled-components"; // 確保引入 styled-components
+import { Calendar } from "lucide-react";
+import SectionAnimation from "./SectionAnimation"; // 引入 SectionAnimation
+import { Section, SectionTitle } from "./Section"; // 引入通用的 Section 和 SectionTitle
 
 // 時間軸內容樣式
 const TimelineContent = styled.div`
@@ -12,15 +12,15 @@ const TimelineContent = styled.div`
   max-width: 1000px;
   position: relative;
   margin: 0 auto;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     top: 0;
     width: 2px;
     height: 100%;
-    background: #6A4C93; /* 輔色 */
+    background: #6a4c93; /* 輔色 */
     z-index: 0;
     transform: translateX(-50%);
   }
@@ -33,9 +33,9 @@ const TimelineItemWrapper = styled.div`
   padding: 20px 40px;
   box-sizing: border-box;
   margin-top: 20px;
-  
-  ${({ index }) => (index % 2 === 0 ? 'left: 0;' : 'left: 50%;')}
-  
+
+  ${({ index }) => (index % 2 === 0 ? "left: 0;" : "left: 50%;")}
+
   @media (max-width: 768px) {
     width: 100%;
     left: 0;
@@ -43,14 +43,14 @@ const TimelineItemWrapper = styled.div`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
-    ${({ index }) => (index % 2 === 0 ? 'right: -8px;' : 'left: -8px;')}
+    ${({ index }) => (index % 2 === 0 ? "right: -8px;" : "left: -8px;")}
     transform: translateY(-50%);
     width: 16px;
     height: 16px;
-    background: #FF6F61; /* 主色 */
+    background: #ff6f61; /* 主色 */
     border-radius: 50%;
     z-index: 1;
   }
@@ -58,30 +58,30 @@ const TimelineItemWrapper = styled.div`
 
 // 時間軸項目內容樣式
 const TimelineItemContent = styled.div`
-  background: #FFE5D9; /* 淡珊瑚橙 */
+  background: #ffe5d9; /* 淡珊瑚橙 */
   backdrop-filter: blur(5px);
   padding: 15px 20px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
-  
+
   h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #6A4C93; /* 輔色 */
+    color: #6a4c93; /* 輔色 */
   }
-  
+
   p {
     font-size: 1.2rem;
     color: #333333; /* 文字色改為深灰色 */
     line-height: 1.5;
   }
-  
+
   time {
     display: block;
     font-size: 1rem;
-    color: #FF6F61; /* 主色 */
+    color: #ff6f61; /* 主色 */
     margin-bottom: 5px;
   }
 `;
@@ -89,7 +89,9 @@ const TimelineItemContent = styled.div`
 // 主要時間軸組件
 const Timeline = ({ items }) => {
   return (
-    <Section bgColor="#E6E6FF"> {/* 淡紫羅蘭色 */}
+    <Section bgColor="#E6E6FF">
+      {" "}
+      {/* 淡紫羅蘭色 */}
       <SectionTitle>
         <Calendar /> 活動時程
       </SectionTitle>

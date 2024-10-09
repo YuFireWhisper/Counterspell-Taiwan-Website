@@ -1,11 +1,11 @@
 // src/components/RequiredItems.js
 
-import React from 'react';
-import styled from 'styled-components';
-import { Briefcase } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
-import content from './content';
-import { Section, SectionTitle } from './Section';
+import React from "react";
+import styled from "styled-components";
+import { Briefcase } from "lucide-react";
+import SectionAnimation from "./SectionAnimation";
+import content from "./content";
+import { Section, SectionTitle } from "./Section";
 
 const RequiredItemsContent = styled.div`
   color: #333333; /* 文字色改為深灰色 */
@@ -19,17 +19,19 @@ const RequiredItemsContent = styled.div`
 `;
 
 const RequiredItem = styled.div`
-  background-color: #FFE5D9; /* 淡珊瑚橙 */
+  background-color: #ffe5d9; /* 淡珊瑚橙 */
   padding: 15px;
   margin: 0 10px;
   border-radius: 15px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   width: 200px;
   height: 100px;
   display: flex;
-  flex-direction: column; 
-  justify-content: center; 
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 
   &:hover {
@@ -40,7 +42,7 @@ const RequiredItem = styled.div`
   svg {
     font-size: 2rem;
     margin-bottom: 10px;
-    color: #6A4C93; /* 輔色 */
+    color: #6a4c93; /* 輔色 */
   }
 
   p {
@@ -50,12 +52,14 @@ const RequiredItem = styled.div`
 `;
 
 const RequiredItemsTitle = styled(SectionTitle)`
-  color: #FF6F61; /* 主色 */
+  color: #ff6f61; /* 主色 */
 `;
 
 const RequiredItems = () => {
   return (
-    <Section bgColor="#E6E6FF"> {/* 淡紫羅蘭色 */}
+    <Section bgColor="#E6E6FF">
+      {" "}
+      {/* 淡紫羅蘭色 */}
       <RequiredItemsTitle>
         <Briefcase /> 必備物品
       </RequiredItemsTitle>

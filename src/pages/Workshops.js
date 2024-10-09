@@ -1,9 +1,9 @@
 // src/pages/Workshops.js
 
-import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import { Link } from 'react-router-dom'; // 使用 react-router-dom 進行路由
-import content from '../components/content';
+import React from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import { Link } from "react-router-dom"; // 使用 react-router-dom 進行路由
+import content from "../components/content";
 
 // 全局樣式（可重複使用或從 Home.js 中抽取）
 const GlobalStyle = createGlobalStyle`
@@ -40,7 +40,7 @@ const PageTitle = styled.h1`
   font-size: 3rem;
   text-align: center;
   margin-bottom: 40px;
-  font-family: 'Audiowide', sans-serif;
+  font-family: "Audiowide", sans-serif;
 `;
 
 // 工作坊內容區塊
@@ -106,15 +106,37 @@ const Workshops = () => {
         <PageTitle>工作坊</PageTitle>
         <WorkshopContent>
           <WorkshopItem>
-            <h2>{content.workshopDetails.title || '遊戲開發入門'}</h2>
-            <p>{content.workshopDetails.description || '參加我們的遊戲開發入門工作坊，學習如何利用現代化工具快速創建遊戲原型，結合生成式AI進行創意發想，並掌握精緻化設計的技巧。'}</p>
+            <h2>{content.workshopDetails.title || "遊戲開發入門"}</h2>
+            <p>
+              {content.workshopDetails.description ||
+                "參加我們的遊戲開發入門工作坊，學習如何利用現代化工具快速創建遊戲原型，結合生成式AI進行創意發想，並掌握精緻化設計的技巧。"}
+            </p>
             <ul>
-              <li><strong>地點：</strong>{content.workshopDetails.location || '待確認'}</li>
-              <li><strong>時間：</strong>{content.workshopDetails.time || '待確認'}</li>
-              <li><strong>導師：</strong>{content.workshopDetails.instructors || '待確認'}</li>
-              <li><strong>費用：</strong>{content.workshopDetails.fee || '全額免費'}</li>
-              <li><strong>報名方式：</strong>{content.workshopDetails.registration || '報名 Counterspell Taiwan 即可免費參加'}</li>
-              <li><strong>需攜帶物品：</strong>{content.workshopDetails.requiredItems || '待確認'}</li>
+              <li>
+                <strong>地點：</strong>
+                {content.workshopDetails.location || "待確認"}
+              </li>
+              <li>
+                <strong>時間：</strong>
+                {content.workshopDetails.time || "待確認"}
+              </li>
+              <li>
+                <strong>導師：</strong>
+                {content.workshopDetails.instructors || "待確認"}
+              </li>
+              <li>
+                <strong>費用：</strong>
+                {content.workshopDetails.fee || "全額免費"}
+              </li>
+              <li>
+                <strong>報名方式：</strong>
+                {content.workshopDetails.registration ||
+                  "報名 Counterspell Taiwan 即可免費參加"}
+              </li>
+              <li>
+                <strong>需攜帶物品：</strong>
+                {content.workshopDetails.requiredItems || "待確認"}
+              </li>
             </ul>
           </WorkshopItem>
           {/* 如有多個工作坊，可重複上面的 WorkshopItem */}

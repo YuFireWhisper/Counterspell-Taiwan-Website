@@ -1,12 +1,12 @@
 // src/components/Registration.js
 
-import React from 'react';
-import styled from 'styled-components';
-import { Mail } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
-import content from './content';
-import { animated } from '@react-spring/web';
-import { Section, SectionTitle } from './Section';
+import React from "react";
+import styled from "styled-components";
+import { Mail } from "lucide-react";
+import SectionAnimation from "./SectionAnimation";
+import content from "./content";
+import { animated } from "@react-spring/web";
+import { Section, SectionTitle } from "./Section";
 
 const RegistrationContent = styled.div`
   max-width: 800px;
@@ -21,20 +21,23 @@ const RegistrationContent = styled.div`
 
 const RegistrationButton = styled(animated.button)`
   padding: 15px 30px;
-  background: #FF6F61; /* 主色 */
-  color: #FFFFFF; /* 白色文字 */
+  background: #ff6f61; /* 主色 */
+  color: #ffffff; /* 白色文字 */
   border: none;
   border-radius: 50px;
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
   will-change: transform, background, box-shadow;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
   box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4); /* 調整陰影顏色 */
 
   &:hover {
     transform: scale(1.08);
-    background: #FFC75F; /* 點綴色 */
+    background: #ffc75f; /* 點綴色 */
     box-shadow: 0 8px 25px rgba(255, 199, 95, 0.6); /* 調整陰影顏色 */
   }
 
@@ -45,12 +48,14 @@ const RegistrationButton = styled(animated.button)`
 `;
 
 const RegistrationTitle = styled(SectionTitle)`
-  color: #FF6F61; /* 主色 */
+  color: #ff6f61; /* 主色 */
 `;
 
 const Registration = ({ sectionRefs, handleScrollTo }) => {
   return (
-    <Section bgColor="#FFF3CC"> {/* 淡芥末黃 */}
+    <Section bgColor="#FFF3CC">
+      {" "}
+      {/* 淡芥末黃 */}
       <RegistrationTitle>
         <Mail /> 報名活動
       </RegistrationTitle>
@@ -58,7 +63,7 @@ const Registration = ({ sectionRefs, handleScrollTo }) => {
         <SectionAnimation>
           <p>
             {content.participantInfo?.registrationProcess ||
-              '報名流程資訊尚未更新。'}
+              "報名流程資訊尚未更新。"}
           </p>
         </SectionAnimation>
       </RegistrationContent>
@@ -67,7 +72,7 @@ const Registration = ({ sectionRefs, handleScrollTo }) => {
           onClick={() => {
             if (content.registrationPath) {
               if (
-                content.registrationPath.startsWith('#') &&
+                content.registrationPath.startsWith("#") &&
                 sectionRefs.registration.current
               ) {
                 handleScrollTo(sectionRefs.registration);

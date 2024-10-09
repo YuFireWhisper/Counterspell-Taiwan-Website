@@ -1,25 +1,25 @@
 // src/pages/Home.js
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import styled from 'styled-components';
-import { useSpring, animated, config } from '@react-spring/web';
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import styled from "styled-components";
+import { useSpring, animated, config } from "@react-spring/web";
 
-import LocomotiveScroll from 'locomotive-scroll';
-import 'locomotive-scroll/dist/locomotive-scroll.css';
-import { loadFull } from 'tsparticles';
-import Particles from '@tsparticles/react';
-import _ from 'lodash';
-import content from '../components/content';
-import Timeline from '../components/Timeline';
-import Goals from '../components/Goal';
-import EventInfo from '../components/EventInfo';
-import AboutUs from '../components/AboutUs';
-import RequiredItems from '../components/RequiredItems';
-import Registration from '../components/Registration';
-import QASection from '../components/QASection';
-import ContactInfo from '../components/ContactInfo';
-import Hero from '../components/Hero';
-import NavigationDots from '../components/NavDots'; 
+import LocomotiveScroll from "locomotive-scroll";
+import "locomotive-scroll/dist/locomotive-scroll.css";
+import { loadFull } from "tsparticles";
+import Particles from "@tsparticles/react";
+import _ from "lodash";
+import content from "../components/content";
+import Timeline from "../components/Timeline";
+import Goals from "../components/Goal";
+import EventInfo from "../components/EventInfo";
+import AboutUs from "../components/AboutUs";
+import RequiredItems from "../components/RequiredItems";
+import Registration from "../components/Registration";
+import QASection from "../components/QASection";
+import ContactInfo from "../components/ContactInfo";
+import Hero from "../components/Hero";
+import NavigationDots from "../components/NavDots";
 
 // --------------------------------------------
 // 1. 定義 Styled Components
@@ -33,7 +33,7 @@ const ParallaxBackground = styled.div`
   right: 0;
   bottom: 0;
   /* 修改為主色和輔色的漸變 */
-  background-image: linear-gradient(to right top, #FF6F61, #6A4C93);
+  background-image: linear-gradient(to right top, #ff6f61, #6a4c93);
   z-index: -3; /* 位於 ParticleBackground 下方 */
   will-change: background;
 `;
@@ -84,14 +84,14 @@ const ParticleEffect = React.memo(() => {
   const particlesOptions = {
     background: {
       color: {
-        value: 'transparent',
+        value: "transparent",
       },
     },
     fpsLimit: 60,
     interactivity: {
       events: {
-        onClick: { enable: true, mode: 'push' },
-        onHover: { enable: false, mode: 'repulse' }, // 禁用懸停 repulse 以提升性能
+        onClick: { enable: true, mode: "push" },
+        onHover: { enable: false, mode: "repulse" }, // 禁用懸停 repulse 以提升性能
         resize: true,
       },
       modes: {
@@ -99,9 +99,9 @@ const ParticleEffect = React.memo(() => {
       },
     },
     particles: {
-      color: { value: '#ffffff' },
+      color: { value: "#ffffff" },
       links: {
-        color: '#ffffff',
+        color: "#ffffff",
         distance: 150,
         enable: true,
         opacity: 0.5,
@@ -109,9 +109,9 @@ const ParticleEffect = React.memo(() => {
       },
       collisions: { enable: false },
       move: {
-        direction: 'none',
+        direction: "none",
         enable: true,
-        outModes: 'bounce',
+        outModes: "bounce",
         random: false,
         speed: 1.5, // 減慢移動速度以提升性能
         straight: false,
@@ -121,7 +121,7 @@ const ParticleEffect = React.memo(() => {
         value: 30, // 減少粒子數量以提升性能
       },
       opacity: { value: 0.5 },
-      shape: { type: 'circle' },
+      shape: { type: "circle" },
       size: { value: { min: 1, max: 3 } }, // 減少粒子大小
     },
     detectRetina: true,
@@ -129,7 +129,11 @@ const ParticleEffect = React.memo(() => {
 
   return (
     <ParticleBackground>
-      <Particles id="tsparticles" init={particlesInit} options={particlesOptions} />
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={particlesOptions}
+      />
     </ParticleBackground>
   );
 });
@@ -159,23 +163,27 @@ const Home = () => {
   const contactInfoRef = useRef(null);
 
   // Use memo to store sections
-  const sections = useMemo(() => [
-    { id: 'aboutUs', name: '關於我們', ref: aboutUsRef },
-    { id: 'timeline', name: '活動時程', ref: timelineRef },
-    { id: 'eventInfo', name: '活動資訊', ref: eventInfoRef },
-    { id: 'goals', name: '活動目標', ref: goalsRef },
-    { id: 'requiredItems', name: '必備物品', ref: requiredItemsRef },
-    { id: 'registration', name: '報名活動', ref: registrationRef },
-    { id: 'qa', name: '常見問答', ref: qaRef },
-    { id: 'contactInfo', name: '聯絡資訊', ref: contactInfoRef },
-  ], []);
+  const sections = useMemo(
+    () => [
+      { id: "aboutUs", name: "關於我們", ref: aboutUsRef },
+      { id: "timeline", name: "活動時程", ref: timelineRef },
+      { id: "eventInfo", name: "活動資訊", ref: eventInfoRef },
+      { id: "goals", name: "活動目標", ref: goalsRef },
+      { id: "requiredItems", name: "必備物品", ref: requiredItemsRef },
+      { id: "registration", name: "報名活動", ref: registrationRef },
+      { id: "qa", name: "常見問答", ref: qaRef },
+      { id: "contactInfo", name: "聯絡資訊", ref: contactInfoRef },
+    ],
+    [],
+  );
 
   const sectionRefs = useMemo(
-    () => sections.reduce((acc, section) => {
-      acc[section.id] = section.ref;
-      return acc;
-    }, {}),
-    [sections]
+    () =>
+      sections.reduce((acc, section) => {
+        acc[section.id] = section.ref;
+        return acc;
+      }, {}),
+    [sections],
   );
 
   // 節流的滾動事件處理器
@@ -202,7 +210,7 @@ const Home = () => {
           }
         }
       }, 100), // 節流延遲設置為 100ms
-    [sectionRefs]
+    [sectionRefs],
   );
 
   // 初始化 Locomotive Scroll
@@ -213,7 +221,7 @@ const Home = () => {
         smooth: true,
       });
 
-      locoScroll.current.on('scroll', handleScroll);
+      locoScroll.current.on("scroll", handleScroll);
       locoScroll.current.update();
     }
 
@@ -261,8 +269,12 @@ const Home = () => {
       {/* 固定的元素位於滾動容器上方 */}
       <ParallaxBackground />
       {/* Hero 區塊 */}
-      <Hero heroSpring={heroSpring} handleScrollTo={handleScrollTo} timelineRef={timelineRef} content={content} />
-
+      <Hero
+        heroSpring={heroSpring}
+        handleScrollTo={handleScrollTo}
+        timelineRef={timelineRef}
+        content={content}
+      />
       {/* 滾動容器 */}
       <HomeContainer ref={scrollContainerRef} data-scroll-container>
         <ContentWrapper>
@@ -271,24 +283,28 @@ const Home = () => {
           {sections.map(({ id, name, ref }) => (
             <div key={id} ref={ref} id={id} data-scroll-section>
               {/* Render the corresponding section component based on the id */}
-              {id === 'aboutUs' && <AboutUs />}
-              {id === 'timeline' && <Timeline items={content.schedule} />}
-              {id === 'eventInfo' && <EventInfo />}
-              {id === 'goals' && <Goals goals={content.goals || []} />}
-              {id === 'requiredItems' && <RequiredItems />}
-              {id === 'registration' && <Registration sectionRefs={sectionRefs} handleScrollTo={handleScrollTo} />}
-              {id === 'qa' && <QASection />}
-              {id === 'contactInfo' && <ContactInfo />}
+              {id === "aboutUs" && <AboutUs />}
+              {id === "timeline" && <Timeline items={content.schedule} />}
+              {id === "eventInfo" && <EventInfo />}
+              {id === "goals" && <Goals goals={content.goals || []} />}
+              {id === "requiredItems" && <RequiredItems />}
+              {id === "registration" && (
+                <Registration
+                  sectionRefs={sectionRefs}
+                  handleScrollTo={handleScrollTo}
+                />
+              )}
+              {id === "qa" && <QASection />}
+              {id === "contactInfo" && <ContactInfo />}
             </div>
           ))}
 
           {/* 導航圓點 */}
           <NavigationDots
             activeSection={activeSection}
-            sections={sections}  // 傳遞帶有名稱的 sections
+            sections={sections} // 傳遞帶有名稱的 sections
             handleScrollTo={handleScrollTo}
           />
-
         </ContentWrapper>
       </HomeContainer>
     </>

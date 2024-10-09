@@ -1,14 +1,14 @@
 // src/components/ContactInfo.js
 
-import React from 'react';
-import styled from 'styled-components';
-import { Mail, Phone } from 'lucide-react';
-import SectionAnimation from './SectionAnimation'; // 引入 SectionAnimation
-import content from './content';
-import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
+import React from "react";
+import styled from "styled-components";
+import { Mail, Phone } from "lucide-react";
+import SectionAnimation from "./SectionAnimation"; // 引入 SectionAnimation
+import content from "./content";
+import { Section, SectionTitle } from "./Section"; // 引入通用的 Section 和 SectionTitle
 
 const ContactInfoContent = styled.div`
-  color: #FFFFFF;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,19 +24,21 @@ const ContactItem = styled.div`
   font-size: 1.2rem;
 
   a {
-    color: #FF6F61; /* 主色 */
+    color: #ff6f61; /* 主色 */
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
-      color: #FFC75F; /* 點綴色 */
+      color: #ffc75f; /* 點綴色 */
     }
   }
 `;
 
 const ContactInfo = () => {
   return (
-    <Section bgColor="#E6E6FF"> {/* 淡紫羅蘭色 */}
+    <Section bgColor="#E6E6FF">
+      {" "}
+      {/* 淡紫羅蘭色 */}
       <SectionTitle>
         <Phone /> 聯絡資訊
       </SectionTitle>
@@ -44,8 +46,10 @@ const ContactInfo = () => {
         <SectionAnimation>
           <ContactItem>
             <Mail size={24} />
-            <a href={`mailto:${content.contactInfo?.email || 'contact@hackathon2024.com'}`}>
-              {content.contactInfo?.email || 'contact@hackathon2024.com'}
+            <a
+              href={`mailto:${content.contactInfo?.email || "contact@hackathon2024.com"}`}
+            >
+              {content.contactInfo?.email || "contact@hackathon2024.com"}
             </a>
           </ContactItem>
         </SectionAnimation>
@@ -53,11 +57,11 @@ const ContactInfo = () => {
           <ContactItem>
             <Phone size={24} />
             <a
-              href={`https://instagram.com/${content.contactInfo?.instagram || 'hackathon2024'}`}
+              href={`https://instagram.com/${content.contactInfo?.instagram || "hackathon2024"}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              @{content.contactInfo?.instagram || 'hackathon2024'}
+              @{content.contactInfo?.instagram || "hackathon2024"}
             </a>
           </ContactItem>
         </SectionAnimation>

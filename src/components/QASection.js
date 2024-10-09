@@ -1,13 +1,13 @@
 // src/components/QASection.js
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { HelpCircle } from 'lucide-react';
-import SectionAnimation from './SectionAnimation';
-import content from './content';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { HelpCircle } from "lucide-react";
+import SectionAnimation from "./SectionAnimation";
+import content from "./content";
 
 const QASectionStyled = styled.section`
-  background: #FFE5D9; /* 淡珊瑚橙 */
+  background: #ffe5d9; /* 淡珊瑚橙 */
   margin-bottom: 30px;
   border-radius: 20px;
   padding: 40px;
@@ -18,13 +18,13 @@ const QASectionStyled = styled.section`
 `;
 
 const SectionTitleStyled = styled.h2`
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", sans-serif;
   font-size: 2.5rem;
   margin-bottom: 30px;
   display: flex;
   align-items: center;
   gap: 15px;
-  color: #FF6F61; /* 主色 */
+  color: #ff6f61; /* 主色 */
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   svg {
@@ -51,10 +51,10 @@ const Question = styled.h3`
   cursor: pointer;
   position: relative;
   padding-right: 20px;
-  color: #6A4C93; /* 輔色 */
+  color: #6a4c93; /* 輔色 */
 
   &:after {
-    content: '+';
+    content: "+";
     position: absolute;
     right: 0;
     top: 0;
@@ -95,7 +95,7 @@ const QASection = () => {
           <SectionAnimation key={index}>
             <div>
               <Question
-                className={activeQAIndices[index] ? 'active' : ''}
+                className={activeQAIndices[index] ? "active" : ""}
                 onClick={() => toggleQA(index)}
               >
                 {qaItem.question}

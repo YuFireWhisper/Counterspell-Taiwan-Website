@@ -1,8 +1,8 @@
 // src/components/NavDots.js
 
-import React from 'react';
-import { useSpring, animated, config } from '@react-spring/web';
-import styled from 'styled-components';
+import React from "react";
+import { useSpring, animated, config } from "@react-spring/web";
+import styled from "styled-components";
 
 // 導航圓點容器
 const NavDotsContainerWrapper = styled.div`
@@ -29,7 +29,7 @@ const Tooltip = styled.div`
     top: 50%;
     transform: translateY(-50%);
     background-color: #333333; /* 深灰色背景 */
-    color: #FFFFFF; /* 白色文字 */
+    color: #ffffff; /* 白色文字 */
     padding: 5px 10px;
     border-radius: 5px;
     white-space: nowrap;
@@ -39,7 +39,7 @@ const Tooltip = styled.div`
   }
 
   &::after {
-    content: '';
+    content: "";
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -50,29 +50,36 @@ const AnimatedNavDot = styled(animated.div)`
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: ${(props) => (props.isActive ? '#FF6F61' : '#FFFFFF')}; /* 主色與白色 */
+  background-color: ${(props) =>
+    props.isActive ? "#FF6F61" : "#FFFFFF"}; /* 主色與白色 */
   cursor: pointer;
   will-change: transform, background-color, opacity;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #FFC75F; /* 點綴色 */
+    background-color: #ffc75f; /* 點綴色 */
     transform: scale(1.2);
-    transition: transform 0.2s ease, background-color 0.3s ease;
+    transition:
+      transform 0.2s ease,
+      background-color 0.3s ease;
   }
 `;
 
 // React.memo 用於導航圓點組件，避免不必要的重新渲染
 const NavDotComponent = React.memo(({ isActive, onClick, tooltip }) => {
   const springProps = useSpring({
-    transform: isActive ? 'scale(1.5)' : 'scale(1)',
+    transform: isActive ? "scale(1.5)" : "scale(1)",
     opacity: isActive ? 1 : 0.7,
     config: config.wobbly,
   });
 
   return (
     <Tooltip data-tooltip={tooltip}>
-      <AnimatedNavDot style={springProps} isActive={isActive} onClick={onClick} />
+      <AnimatedNavDot
+        style={springProps}
+        isActive={isActive}
+        onClick={onClick}
+      />
     </Tooltip>
   );
 });

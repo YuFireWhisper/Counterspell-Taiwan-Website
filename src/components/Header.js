@@ -1,9 +1,9 @@
 // src/components/Header.js
 
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { throttle } from 'lodash';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { throttle } from "lodash";
 
 // 導航欄容器
 const Nav = styled.nav`
@@ -19,7 +19,7 @@ const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   z-index: 1001;
-  transform: ${(props) => (props.show ? 'translateY(0)' : 'translateY(-100%)')};
+  transform: ${(props) => (props.show ? "translateY(0)" : "translateY(-100%)")};
   transition: transform 0.3s ease-in-out;
   box-sizing: border-box;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加輕微陰影 */
@@ -27,12 +27,12 @@ const Nav = styled.nav`
 
 // 標誌或網站名稱
 const Logo = styled(Link)`
-  font-family: 'Audiowide', sans-serif;
+  font-family: "Audiowide", sans-serif;
   font-size: 1.8rem;
   color: #333333; /* 文字色改為深灰色 */
   text-decoration: none;
   &:hover {
-    color: #FF6F61; /* 主色 */
+    color: #ff6f61; /* 主色 */
   }
 `;
 
@@ -45,18 +45,18 @@ const NavLinks = styled.div`
 
 // 單個導航連結
 const NavLinkItem = styled(Link)`
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", sans-serif;
   font-size: 1.2rem;
   color: #333333; /* 文字色改為深灰色 */
   text-decoration: none;
   position: relative;
   white-space: nowrap; /* 防止文字換行 */
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     width: 0%;
     height: 2px;
-    background: #FFC75F; /* 點綴色 */
+    background: #ffc75f; /* 點綴色 */
     left: 0;
     bottom: -5px;
     transition: width 0.3s ease;
@@ -65,7 +65,7 @@ const NavLinkItem = styled(Link)`
     width: 100%;
   }
   &:hover {
-    color: #FF6F61; /* 主色 */
+    color: #ff6f61; /* 主色 */
   }
 `;
 
@@ -76,7 +76,7 @@ const Header = () => {
   const [scrollTimeout, setScrollTimeout] = useState(null);
 
   const controlNavbar = throttle(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const currentScrollY = window.scrollY;
       if (currentScrollY < lastScrollY) {
         setShow(true);
@@ -88,10 +88,10 @@ const Header = () => {
   }, 200);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', controlNavbar);
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlNavbar);
       return () => {
-        window.removeEventListener('scroll', controlNavbar);
+        window.removeEventListener("scroll", controlNavbar);
       };
     }
   }, [lastScrollY, controlNavbar]);
@@ -109,9 +109,9 @@ const Header = () => {
       setScrollTimeout(timeout);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       if (scrollTimeout) {
         clearTimeout(scrollTimeout);
       }

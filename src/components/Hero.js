@@ -1,9 +1,9 @@
 // src/components/Hero.js
 
-import React from 'react';
-import styled from 'styled-components';
-import { ChevronDown } from 'lucide-react';
-import { useSpring, animated, config } from '@react-spring/web';
+import React from "react";
+import styled from "styled-components";
+import { ChevronDown } from "lucide-react";
+import { useSpring, animated, config } from "@react-spring/web";
 
 // Styled Components for Hero section
 const AnimatedHero = styled(animated.div)`
@@ -17,16 +17,16 @@ const AnimatedHero = styled(animated.div)`
   text-align: center;
   color: #333333; /* 文字色改為深灰色 */
   z-index: 0;
-  background: linear-gradient(135deg, #FF6F61, #FFC75F); /* 使用漸變背景 */
+  background: linear-gradient(135deg, #ff6f61, #ffc75f); /* 使用漸變背景 */
 `;
 
 // 標題
 const AnimatedH1 = styled(animated.h1)`
   @font-face {
-    font-family: 'Audiowide';
-    src: url('/fonts/Audiowide-Regular.ttf') format('truetype');
+    font-family: "Audiowide";
+    src: url("/fonts/Audiowide-Regular.ttf") format("truetype");
   }
-  font-family: 'Audiowide', sans-serif;
+  font-family: "Audiowide", sans-serif;
   font-size: 4rem;
   margin-bottom: 20px;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* 文字陰影改為白色 */
@@ -47,7 +47,7 @@ const AnimatedH1 = styled(animated.h1)`
 
 // 描述文字
 const AnimatedP = styled(animated.p)`
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", sans-serif;
   font-size: 1.5rem;
   max-width: 600px;
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* 文字陰影改為白色 */
@@ -123,9 +123,9 @@ const ScrollIndicator = styled.div`
 const Hero = ({ heroSpring, handleScrollTo, timelineRef, content }) => {
   return (
     <AnimatedHero style={heroSpring}>
-      <AnimatedH1>{content.eventName || 'Counterspell Taiwan'}</AnimatedH1>
+      <AnimatedH1>{content.eventName || "Counterspell Taiwan"}</AnimatedH1>
       <AnimatedP>
-        {content.eventDescription || '全台第一場由青少年舉辦給青少年的黑客松'}
+        {content.eventDescription || "全台第一場由青少年舉辦給青少年的黑客松"}
       </AnimatedP>
       <ScrollIndicator onClick={() => handleScrollTo(timelineRef)}>
         <span>滑動以探索</span>

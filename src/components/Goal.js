@@ -1,11 +1,11 @@
 // src/components/Goal.js
 
-import React from 'react';
-import styled from 'styled-components';
-import { Award } from 'lucide-react';
-import { Section, SectionTitle } from './Section';
-import { useInView } from 'react-intersection-observer';
-import { useSpring, animated } from '@react-spring/web';
+import React from "react";
+import styled from "styled-components";
+import { Award } from "lucide-react";
+import { Section, SectionTitle } from "./Section";
+import { useInView } from "react-intersection-observer";
+import { useSpring, animated } from "@react-spring/web";
 
 // 目標內容包裝
 const GoalsContent = styled.div`
@@ -20,10 +20,10 @@ const GoalsContent = styled.div`
 
 // 目標項目，帶有懸停效果
 const GoalItem = styled.div`
-  background-color: #FF6F61; /* 主色 */
+  background-color: #ff6f61; /* 主色 */
   padding: 15px;
   border-radius: 15px;
-  color: #FFFFFF; /* 文字色 */
+  color: #ffffff; /* 文字色 */
   transition: transform 0.3s ease;
   will-change: transform, opacity;
   max-width: 400px;
@@ -39,11 +39,11 @@ const GoalItem = styled.div`
     font-size: 1.5rem;
     margin-bottom: 15px;
     text-align: center;
-    color: #FFC75F; /* 點綴色 */
+    color: #ffc75f; /* 點綴色 */
   }
 
   p {
-    color: #FFFFFF; /* 文字色 */
+    color: #ffffff; /* 文字色 */
     font-size: 1.1rem;
     line-height: 1.5;
     text-align: center;
@@ -51,7 +51,7 @@ const GoalItem = styled.div`
 `;
 
 const GoalSectionTitle = styled(SectionTitle)`
-  color: #6A4C93; /* 輔色 */
+  color: #6a4c93; /* 輔色 */
 `;
 
 // SectionAnimation 組件，用於進場動畫
@@ -63,7 +63,7 @@ const SectionAnimation = React.memo(({ children }) => {
 
   const animation = useSpring({
     opacity: inView ? 1 : 0,
-    transform: inView ? 'translateY(0px)' : 'translateY(50px)',
+    transform: inView ? "translateY(0px)" : "translateY(50px)",
     config: { tension: 120, friction: 14 },
   });
 
@@ -77,7 +77,9 @@ const SectionAnimation = React.memo(({ children }) => {
 // Goals 組件
 const Goals = ({ goals }) => {
   return (
-    <Section bgColor="#FFE5D9"> {/* 淡珊瑚橙 */}
+    <Section bgColor="#FFE5D9">
+      {" "}
+      {/* 淡珊瑚橙 */}
       <GoalSectionTitle>
         <Award /> 活動目標
       </GoalSectionTitle>
