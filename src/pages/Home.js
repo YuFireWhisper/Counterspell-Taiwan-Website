@@ -3,9 +3,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { useSpring, animated, config } from '@react-spring/web';
-import {
-  ChevronDown,
-} from 'lucide-react';
 
 import LocomotiveScroll from 'locomotive-scroll';
 import 'locomotive-scroll/dist/locomotive-scroll.css';
@@ -13,7 +10,6 @@ import { loadFull } from 'tsparticles';
 import Particles from '@tsparticles/react';
 import _ from 'lodash';
 import content from '../components/content';
-import { Link } from 'react-router-dom';
 import Timeline from '../components/Timeline';
 import Goals from '../components/Goal';
 import EventInfo from '../components/EventInfo';
@@ -22,6 +18,8 @@ import RequiredItems from '../components/RequiredItems';
 import Registration from '../components/Registration';
 import QASection from '../components/QASection';
 import ContactInfo from '../components/ContactInfo';
+import Hero from '../components/Hero';
+import NavigationDots from '../components/NavDots'; 
 
 // --------------------------------------------
 // 1. 定義 Styled Components
@@ -50,121 +48,6 @@ const ParticleBackground = styled.div`
   z-index: -2;
 `;
 
-// 固定的 Hero 區域，帶有動畫透明度（位於背景上方）
-const AnimatedHero = styled(animated.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-  z-index: 0; /* 位於 ParallaxBackground 和 ParticleBackground 上方 */
-  will-change: opacity;
-  background: rgba(0, 0, 0, 0.5); /* 半透明背景以增強可讀性 */
-`;
-
-// 動畫標題
-const AnimatedH1 = styled(animated.h1)`
-  @font-face {
-    font-family: 'Audiowide';
-    src: url('/fonts/Audiowide-Regular.ttf') format('truetype');
-  }
-  font-family: 'Audiowide', sans-serif;
-  font-size: 4rem;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  will-change: opacity;
-  animation: fadeInDown 1s ease-out;
-
-  @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-// 動畫段落
-const AnimatedP = styled(animated.p)`
-  font-family: 'Noto Sans TC', sans-serif;
-  font-size: 1.5rem;
-  max-width: 600px;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  will-change: opacity;
-  animation: fadeInUp 1s ease-out 0.5s forwards;
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-// 滾動指示器，帶有彈跳動畫
-const ScrollIndicator = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-  cursor: pointer;
-
-  span {
-    margin-bottom: 10px;
-    font-size: 1rem;
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(10px);
-    }
-    60% {
-      transform: translateY(5px);
-    }
-  }
-
-  svg {
-    animation: bounceIcon 2s infinite;
-  }
-
-  @keyframes bounceIcon {
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(10px);
-    }
-    60% {
-      transform: translateY(5px);
-    }
-  }
-`;
-
 // Home 容器，使用 Locomotive Scroll
 const HomeContainer = styled.div`
   position: relative;
@@ -186,163 +69,6 @@ const ContentWrapper = styled.div`
 const HeroPlaceholder = styled.div`
   height: 100vh;
 `;
-
-// 導航圓點容器
-const NavDotsContainer = styled.div`
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  z-index: 1000;
-  will-change: transform;
-`;
-
-// 導航圓點的提示工具
-const Tooltip = styled.div`
-  position: relative;
-  display: inline-block;
-
-  &:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    right: 120%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    white-space: nowrap;
-    font-size: 0.9rem;
-    opacity: 1;
-    transition: opacity 0.3s;
-  }
-
-  &::after {
-    content: '';
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-`;
-
-// 動畫導航圓點
-const AnimatedNavDot = styled(animated.div)`
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background-color: ${(props) => (props.isActive ? '#feca57' : 'white')};
-  cursor: pointer;
-  will-change: transform, background-color, opacity;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #feca57;
-    transform: scale(1.2);
-    transition: transform 0.2s ease, background-color 0.3s ease;
-  }
-`;
-
-// CTA 按鈕樣式
-const CTAButtonsContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  margin-top: 40px;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const CTAButton = styled(Link)`
-  padding: 15px 30px;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
-
-  &:hover {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, #feb47b, #ff7e5f);
-    box-shadow: 0 8px 25px rgba(255, 126, 95, 0.6);
-  }
-
-  &:active {
-    transform: scale(1);
-    box-shadow: 0 3px 10px rgba(255, 126, 95, 0.3);
-  }
-`;
-
-
-// React.memo 用於導航圓點組件，避免不必要的重新渲染
-const NavDotComponent = React.memo(({ isActive, onClick, tooltip }) => {
-  const springProps = useSpring({
-    transform: isActive ? 'scale(1.5)' : 'scale(1)',
-    opacity: isActive ? 1 : 0.7,
-    config: config.wobbly,
-  });
-
-  return (
-    <Tooltip data-tooltip={tooltip}>
-      <AnimatedNavDot style={springProps} isActive={isActive} onClick={onClick} />
-    </Tooltip>
-  );
-});
-
-// 導航圓點組件
-const NavigationDots = ({ activeSection, sectionRefs, handleScrollTo }) => (
-  <NavDotsContainer>
-    {Object.keys(sectionRefs).map((section) => {
-      const isActive = activeSection === section;
-      return (
-        <NavDotComponent
-          key={section}
-          isActive={isActive}
-          onClick={() => {
-            handleScrollTo(sectionRefs[section]);
-          }}
-          tooltip={formatSectionName(section)}
-        />
-      );
-    })}
-    {/* 新增導航按鈕連結到獨立頁面 */}
-    <Tooltip data-tooltip="工作坊">
-      <Link to="/workshops">
-        <AnimatedNavDot isActive={false} />
-      </Link>
-    </Tooltip>
-    <Tooltip data-tooltip="得獎名單">
-      <Link to="/awards">
-        <AnimatedNavDot isActive={false} />
-      </Link>
-    </Tooltip>
-  </NavDotsContainer>
-);
-
-// 輔助函數，用於格式化區塊名稱
-const formatSectionName = (section) => {
-  const sectionNames = {
-    eventDate: '活動日期',
-    eventLocation: '活動地點',
-    eventOrganizer: '主辦單位',
-    aboutUs: '關於我們',
-    goals: '活動目標',
-    requiredItems: '必備物品',
-    registration: '報名活動',
-    qa: '常見問答',
-    contactInfo: '聯絡資訊',
-    workshops: '工作坊',
-    awards: '得獎名單',
-    timeline: '活動時程',
-  };
-  return sectionNames[section] || section;
-};
 
 // --------------------------------------------
 // 3. ParticleEffect 組件，使用 @tsparticles/react
@@ -420,32 +146,35 @@ const Home = () => {
   // Refs for Sections
   const scrollContainerRef = useRef(null);
   const locoScroll = useRef(null);
-  const eventDateRef = useRef(null);
-  const eventLocationRef = useRef(null);
-  const eventOrganizerRef = useRef(null);
+  const timelineRef = useRef(null);
+
+  // Initialize all refs at the top level
   const aboutUsRef = useRef(null);
+  const eventInfoRef = useRef(null);
   const goalsRef = useRef(null);
   const requiredItemsRef = useRef(null);
   const registrationRef = useRef(null);
   const qaRef = useRef(null);
   const contactInfoRef = useRef(null);
-  const timelineRef = useRef(null);
 
-  // Memoized Section References
+  // Use memo to store sections
+  const sections = useMemo(() => [
+    { id: 'aboutUs', name: '關於我們', ref: aboutUsRef },
+    { id: 'timeline', name: '活動時程', ref: timelineRef },
+    { id: 'eventInfo', name: '活動資訊', ref: eventInfoRef },
+    { id: 'goals', name: '活動目標', ref: goalsRef },
+    { id: 'requiredItems', name: '必備物品', ref: requiredItemsRef },
+    { id: 'registration', name: '報名活動', ref: registrationRef },
+    { id: 'qa', name: '常見問答', ref: qaRef },
+    { id: 'contactInfo', name: '聯絡資訊', ref: contactInfoRef },
+  ], []);
+
   const sectionRefs = useMemo(
-    () => ({
-      eventDate: eventDateRef,
-      eventLocation: eventLocationRef,
-      eventOrganizer: eventOrganizerRef,
-      aboutUs: aboutUsRef,
-      goals: goalsRef,
-      requiredItems: requiredItemsRef,
-      registration: registrationRef,
-      qa: qaRef,
-      contactInfo: contactInfoRef,
-      timeline: timelineRef,
-    }),
-    []
+    () => sections.reduce((acc, section) => {
+      acc[section.id] = section.ref;
+      return acc;
+    }, {}),
+    [sections]
   );
 
   // 節流的滾動事件處理器
@@ -484,13 +213,14 @@ const Home = () => {
       });
 
       locoScroll.current.on('scroll', handleScroll);
+      locoScroll.current.update();
     }
 
     return () => {
       if (locoScroll.current) {
         locoScroll.current.destroy();
       }
-      handleScroll.cancel(); // 取消任何待處理的節流調用
+      handleScroll.cancel();
     };
   }, [handleScroll]);
 
@@ -529,69 +259,36 @@ const Home = () => {
       <ParticleEffect /> {/* 添加粒子背景 */}
       {/* 固定的元素位於滾動容器上方 */}
       <ParallaxBackground />
-      <AnimatedHero style={heroSpring}>
-        <AnimatedH1>{content.eventName || 'Counterspell Taiwan'}</AnimatedH1>
-        <AnimatedP>
-          {content.eventDescription || '全台第一場由青少年舉辦給青少年的黑客松'}
-        </AnimatedP>
-        <ScrollIndicator onClick={() => handleScrollTo(timelineRef)}>
-          <span>滑動以探索</span>
-          <ChevronDown size={24} />
-        </ScrollIndicator>
-      </AnimatedHero>
+      {/* Hero 區塊 */}
+      <Hero heroSpring={heroSpring} handleScrollTo={handleScrollTo} timelineRef={timelineRef} content={content} />
 
       {/* 滾動容器 */}
       <HomeContainer ref={scrollContainerRef} data-scroll-container>
         <ContentWrapper>
           <HeroPlaceholder />
 
-          {/* 關於我們區塊 */}
-          <div ref={aboutUsRef} id="aboutUs" data-scroll-section>
-            <AboutUs />
-          </div>
+          {sections.map(({ id, name, ref }) => (
+            <div key={id} ref={ref} id={id} data-scroll-section>
+              {/* Render the corresponding section component based on the id */}
+              {id === 'aboutUs' && <AboutUs />}
+              {id === 'timeline' && <Timeline items={content.schedule} />}
+              {id === 'eventInfo' && <EventInfo />}
+              {id === 'goals' && <Goals goals={content.goals || []} />}
+              {id === 'requiredItems' && <RequiredItems />}
+              {id === 'registration' && <Registration sectionRefs={sectionRefs} handleScrollTo={handleScrollTo} />}
+              {id === 'qa' && <QASection />}
+              {id === 'contactInfo' && <ContactInfo />}
+            </div>
+          ))}
 
-          {/* 時間軸區塊 */}
-          <div ref={timelineRef} id="timeline" data-scroll-section>
-            <Timeline items={content.schedule} />
-          </div>
+          {/* 導航圓點 */}
+          <NavigationDots
+            activeSection={activeSection}
+            sections={sections}  // 傳遞帶有名稱的 sections
+            handleScrollTo={handleScrollTo}
+          />
 
-          {/* 活動資訊區塊 */}
-          <div ref={eventDateRef} id="eventInfo" data-scroll-section>
-            <EventInfo />
-          </div>
-
-          {/* 活動目標區塊 */}
-          <div ref={goalsRef} id="goals" data-scroll-section>
-            <Goals goals={content.goals || []} />
-          </div>
-
-          {/* 必備物品區塊 */}
-          <div ref={requiredItemsRef} id="requiredItems" data-scroll-section>
-            <RequiredItems />
-          </div>
-
-          {/* 報名活動區塊，包含報名流程 */}
-          <div ref={registrationRef} id="registration" data-scroll-section>
-            <Registration sectionRefs={sectionRefs} handleScrollTo={handleScrollTo} />
-          </div>
-
-          {/* 常見問答區塊 */}
-          <div ref={qaRef} id="qa" data-scroll-section>
-            <QASection />
-          </div>
-
-          {/* 聯絡資訊區塊 */}
-          <div ref={contactInfoRef} id="contactInfo" data-scroll-section>
-            <ContactInfo />
-          </div>
         </ContentWrapper>
-
-        {/* 導航圓點 */}
-        <NavigationDots
-          activeSection={activeSection}
-          sectionRefs={sectionRefs}
-          handleScrollTo={handleScrollTo}
-        />
       </HomeContainer>
     </>
   );
