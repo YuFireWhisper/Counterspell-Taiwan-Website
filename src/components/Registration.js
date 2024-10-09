@@ -6,7 +6,7 @@ import { Mail } from 'lucide-react';
 import SectionAnimation from './SectionAnimation';
 import content from './content';
 import { animated } from '@react-spring/web';
-import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
+import { Section, SectionTitle } from './Section';
 
 const RegistrationContent = styled.div`
   max-width: 800px;
@@ -15,14 +15,14 @@ const RegistrationContent = styled.div`
   p {
     font-size: 1.5rem;
     line-height: 1.6;
-    color: white;
+    color: #333333; /* 文字色改為深灰色 */
   }
 `;
 
 const RegistrationButton = styled(animated.button)`
   padding: 15px 30px;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  color: white;
+  background: #FF6F61; /* 主色 */
+  color: #FFFFFF; /* 白色文字 */
   border: none;
   border-radius: 50px;
   font-size: 1.5rem;
@@ -30,26 +30,30 @@ const RegistrationButton = styled(animated.button)`
   cursor: pointer;
   will-change: transform, background, box-shadow;
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4); /* 調整陰影顏色 */
 
   &:hover {
     transform: scale(1.08);
-    background: linear-gradient(135deg, #feb47b, #ff7e5f);
-    box-shadow: 0 8px 25px rgba(255, 126, 95, 0.6);
+    background: #FFC75F; /* 點綴色 */
+    box-shadow: 0 8px 25px rgba(255, 199, 95, 0.6); /* 調整陰影顏色 */
   }
 
   &:active {
     transform: scale(1);
-    box-shadow: 0 3px 10px rgba(255, 126, 95, 0.3);
+    box-shadow: 0 3px 10px rgba(255, 111, 97, 0.3); /* 調整陰影顏色 */
   }
+`;
+
+const RegistrationTitle = styled(SectionTitle)`
+  color: #FF6F61; /* 主色 */
 `;
 
 const Registration = ({ sectionRefs, handleScrollTo }) => {
   return (
-    <Section style={{ background: 'linear-gradient(45deg, #5f27cd, #48dbfb)' }}>
-      <SectionTitle>
+    <Section bgColor="#FFF3CC"> {/* 淡芥末黃 */}
+      <RegistrationTitle>
         <Mail /> 報名活動
-      </SectionTitle>
+      </RegistrationTitle>
       <RegistrationContent>
         <SectionAnimation>
           <p>

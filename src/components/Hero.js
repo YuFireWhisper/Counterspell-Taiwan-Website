@@ -7,9 +7,7 @@ import { useSpring, animated, config } from '@react-spring/web';
 
 // Styled Components for Hero section
 const AnimatedHero = styled(animated.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: fixed; /* 改為相對定位，以便放置背景圖片或色塊 */
   width: 100%;
   height: 100vh;
   display: flex;
@@ -17,12 +15,12 @@ const AnimatedHero = styled(animated.div)`
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white;
+  color: #333333; /* 文字色改為深灰色 */
   z-index: 0;
-  will-change: opacity;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #FF6F61, #FFC75F); /* 使用漸變背景 */
 `;
 
+// 標題
 const AnimatedH1 = styled(animated.h1)`
   @font-face {
     font-family: 'Audiowide';
@@ -31,7 +29,7 @@ const AnimatedH1 = styled(animated.h1)`
   font-family: 'Audiowide', sans-serif;
   font-size: 4rem;
   margin-bottom: 20px;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* 文字陰影改為白色 */
   will-change: opacity;
   animation: fadeInDown 1s ease-out;
 
@@ -47,13 +45,15 @@ const AnimatedH1 = styled(animated.h1)`
   }
 `;
 
+// 描述文字
 const AnimatedP = styled(animated.p)`
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 1.5rem;
   max-width: 600px;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* 文字陰影改為白色 */
   will-change: opacity;
   animation: fadeInUp 1s ease-out 0.5s forwards;
+  color: #333333; /* 文字色改為深灰色 */
 
   @keyframes fadeInUp {
     from {
@@ -67,6 +67,7 @@ const AnimatedP = styled(animated.p)`
   }
 `;
 
+// 滑動指示器
 const ScrollIndicator = styled.div`
   display: flex;
   flex-direction: column;
@@ -77,6 +78,7 @@ const ScrollIndicator = styled.div`
   span {
     margin-bottom: 10px;
     font-size: 1rem;
+    color: #333333; /* 文字色改為深灰色 */
     animation: bounce 2s infinite;
   }
 
@@ -98,6 +100,7 @@ const ScrollIndicator = styled.div`
 
   svg {
     animation: bounceIcon 2s infinite;
+    color: #333333; /* 圖標色改為深灰色 */
   }
 
   @keyframes bounceIcon {

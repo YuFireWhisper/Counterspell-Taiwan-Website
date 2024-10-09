@@ -5,27 +5,26 @@ import styled from 'styled-components';
 import { Briefcase } from 'lucide-react';
 import SectionAnimation from './SectionAnimation';
 import content from './content';
-import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
+import { Section, SectionTitle } from './Section';
 
 const RequiredItemsContent = styled.div`
-  color: white;
+  color: #333333; /* 文字色改為深灰色 */
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   justify-items: center;
   width: 100%;
   max-width: 1000px;
-  will-change: transform;
   padding: 5px 10px;
 `;
 
 const RequiredItem = styled.div`
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: #FFE5D9; /* 淡珊瑚橙 */
   padding: 15px;
   margin: 0 10px;
   border-radius: 15px;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 200px;
   height: 100px;
   display: flex;
@@ -35,24 +34,31 @@ const RequiredItem = styled.div`
 
   &:hover {
     transform: translateY(-10px);
+    box-shadow: 0 4px 15px rgba(255, 111, 97, 0.2); /* 添加陰影 */
   }
 
   svg {
     font-size: 2rem;
     margin-bottom: 10px;
+    color: #6A4C93; /* 輔色 */
   }
 
   p {
     font-size: 1.1rem;
+    color: #333333; /* 文字色改為深灰色 */
   }
+`;
+
+const RequiredItemsTitle = styled(SectionTitle)`
+  color: #FF6F61; /* 主色 */
 `;
 
 const RequiredItems = () => {
   return (
-    <Section style={{ background: 'linear-gradient(45deg, #48dbfb, #ff6b6b)' }}>
-      <SectionTitle>
+    <Section bgColor="#E6E6FF"> {/* 淡紫羅蘭色 */}
+      <RequiredItemsTitle>
         <Briefcase /> 必備物品
-      </SectionTitle>
+      </RequiredItemsTitle>
       <RequiredItemsContent>
         {(content.participantInfo?.requiredItems || []).map((item, index) => (
           <SectionAnimation key={index}>

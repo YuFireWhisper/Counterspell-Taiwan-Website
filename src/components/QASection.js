@@ -7,30 +7,25 @@ import SectionAnimation from './SectionAnimation';
 import content from './content';
 
 const QASectionStyled = styled.section`
-  background: linear-gradient(45deg, #20bf6b, #0fb9b1);
-    margin-bottom: 30px;
-  background-color: transparent;
-  backdrop-filter: blur(10px);
+  background: #FFE5D9; /* 淡珊瑚橙 */
+  margin-bottom: 30px;
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  will-change: background, transform;
-  transition: background 0.5s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitleStyled = styled.h2`
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 2.5rem;
   margin-bottom: 30px;
   display: flex;
   align-items: center;
   gap: 15px;
-  color: white;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  will-change: opacity, transform;
+  color: #FF6F61; /* 主色 */
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   svg {
     flex-shrink: 0;
@@ -42,13 +37,12 @@ const SectionTitle = styled.h2`
 `;
 
 const QAContent = styled.div`
-  color: white;
+  color: #333333; /* 文字色改為深灰色 */
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
   max-width: 800px;
-  will-change: opacity, transform;
 `;
 
 const Question = styled.h3`
@@ -57,6 +51,7 @@ const Question = styled.h3`
   cursor: pointer;
   position: relative;
   padding-right: 20px;
+  color: #6A4C93; /* 輔色 */
 
   &:after {
     content: '+';
@@ -77,6 +72,7 @@ const Answer = styled.p`
   line-height: 1.6;
   max-width: 800px;
   margin-left: 20px;
+  color: #333333; /* 文字色改為深灰色 */
 `;
 
 const QASection = () => {
@@ -91,9 +87,9 @@ const QASection = () => {
 
   return (
     <QASectionStyled>
-      <SectionTitle>
+      <SectionTitleStyled>
         <HelpCircle /> 常見問答
-      </SectionTitle>
+      </SectionTitleStyled>
       <QAContent>
         {(content.qa || []).map((qaItem, index) => (
           <SectionAnimation key={index}>

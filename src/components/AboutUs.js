@@ -8,18 +8,16 @@ import content from './content';
 import { Section } from './Section';
 
 const AboutUsSection = styled(Section)`
-  background: #007BFF; /* 藍色主背景 */
-  color: #F8F9FA; /* 文字為淡灰色 */
   font-size: 1.5rem;
 `;
 
 const SectionTitle = styled.h2`
-  color: white;
+  color: #FF6F61; /* 主色 */
   font-size: 2.5rem;
 `;
 
 const AboutUsContent = styled.div`
-  color: white;
+  color: #333333; /* 文字色 */
   display: flex;
   justify-content: center;
   width: 100%;
@@ -31,7 +29,7 @@ const AboutUsContent = styled.div`
 
 const AboutUs = () => {
   return (
-    <AboutUsSection style={{ background: 'linear-gradient(45deg, #54a0ff, #5f27cd)' }}>
+    <AboutUsSection bgColor="#FFE5D9"> {/* 淡珊瑚橙 */}
       <SectionTitle>
         <Users /> 關於我們
       </SectionTitle>

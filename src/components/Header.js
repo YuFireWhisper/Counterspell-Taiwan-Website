@@ -1,3 +1,5 @@
+// src/components/Header.js
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -10,7 +12,7 @@ const Nav = styled.nav`
   left: 0;
   width: 100%;
   height: 65px;
-  background: rgba(20, 20, 20, 0.9);
+  background: rgba(255, 255, 255, 0.9); /* 使用白色背景，稍微透明 */
   backdrop-filter: blur(10px);
   padding: 0 40px;
   display: flex;
@@ -20,16 +22,17 @@ const Nav = styled.nav`
   transform: ${(props) => (props.show ? 'translateY(0)' : 'translateY(-100%)')};
   transition: transform 0.3s ease-in-out;
   box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加輕微陰影 */
 `;
 
 // 標誌或網站名稱
 const Logo = styled(Link)`
   font-family: 'Audiowide', sans-serif;
   font-size: 1.8rem;
-  color: #ffffff;
+  color: #333333; /* 文字色改為深灰色 */
   text-decoration: none;
   &:hover {
-    color: #ff9f43;
+    color: #FF6F61; /* 主色 */
   }
 `;
 
@@ -37,23 +40,23 @@ const Logo = styled(Link)`
 const NavLinks = styled.div`
   display: flex;
   gap: 20px;
-  flex-shrink: 0; // 防止 NavLinks 被壓縮
+  flex-shrink: 0; /* 防止 NavLinks 被壓縮 */
 `;
 
 // 單個導航連結
 const NavLinkItem = styled(Link)`
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 1.2rem;
-  color: #dddddd;
+  color: #333333; /* 文字色改為深灰色 */
   text-decoration: none;
   position: relative;
-  white-space: nowrap; // 防止文字換行
+  white-space: nowrap; /* 防止文字換行 */
   &:after {
     content: '';
     position: absolute;
     width: 0%;
     height: 2px;
-    background: #ff9f43;
+    background: #FFC75F; /* 點綴色 */
     left: 0;
     bottom: -5px;
     transition: width 0.3s ease;
@@ -62,7 +65,7 @@ const NavLinkItem = styled(Link)`
     width: 100%;
   }
   &:hover {
-    color: #ff9f43;
+    color: #FF6F61; /* 主色 */
   }
 `;
 

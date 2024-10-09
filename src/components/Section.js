@@ -1,17 +1,14 @@
-// components/Section.js
+// src/components/Section.js
 
 import styled from 'styled-components';
 
 // 通用區塊樣式，帶有背景和動畫
 export const Section = styled.section`
   margin-bottom: 30px;
-  background-color: transparent;
-  backdrop-filter: blur(10px);
+  background-color: ${(props) => props.bgColor || '#F2F2F2'}; /* 接收 bgColor props，預設為 #F2F2F2 */
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  will-change: background, transform;
-  transition: background 0.5s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,9 +22,8 @@ export const SectionTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: 15px;
-  color: white;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  will-change: opacity, transform;
+  color: #FF6F61; /* 主色 */
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   svg {
     flex-shrink: 0;

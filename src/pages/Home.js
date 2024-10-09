@@ -32,7 +32,8 @@ const ParallaxBackground = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  /* 修改為主色和輔色的漸變 */
+  background-image: linear-gradient(to right top, #FF6F61, #6A4C93);
   z-index: -3; /* 位於 ParticleBackground 下方 */
   will-change: background;
 `;

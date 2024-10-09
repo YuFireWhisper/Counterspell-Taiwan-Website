@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Award } from 'lucide-react';
-import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
+import { Section, SectionTitle } from './Section';
 import { useInView } from 'react-intersection-observer';
 import { useSpring, animated } from '@react-spring/web';
 
@@ -20,10 +20,10 @@ const GoalsContent = styled.div`
 
 // 目標項目，帶有懸停效果
 const GoalItem = styled.div`
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #FF6F61; /* 主色 */
   padding: 15px;
   border-radius: 15px;
-  color: white;
+  color: #FFFFFF; /* 文字色 */
   transition: transform 0.3s ease;
   will-change: transform, opacity;
   max-width: 400px;
@@ -32,19 +32,26 @@ const GoalItem = styled.div`
 
   &:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 111, 97, 0.2); /* 添加陰影 */
   }
 
   h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
     text-align: center;
+    color: #FFC75F; /* 點綴色 */
   }
 
   p {
+    color: #FFFFFF; /* 文字色 */
     font-size: 1.1rem;
     line-height: 1.5;
     text-align: center;
   }
+`;
+
+const GoalSectionTitle = styled(SectionTitle)`
+  color: #6A4C93; /* 輔色 */
 `;
 
 // SectionAnimation 組件，用於進場動畫
@@ -70,10 +77,10 @@ const SectionAnimation = React.memo(({ children }) => {
 // Goals 組件
 const Goals = ({ goals }) => {
   return (
-    <Section style={{ background: 'linear-gradient(45deg, #ff9ff3, #feca57)' }}>
-      <SectionTitle>
+    <Section bgColor="#FFE5D9"> {/* 淡珊瑚橙 */}
+      <GoalSectionTitle>
         <Award /> 活動目標
-      </SectionTitle>
+      </GoalSectionTitle>
       <GoalsContent>
         {goals.map((goal, index) => (
           <SectionAnimation key={index}>

@@ -8,7 +8,7 @@ import content from './content';
 import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
 
 const ContactInfoContent = styled.div`
-  color: white;
+  color: #FFFFFF;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,18 +24,19 @@ const ContactItem = styled.div`
   font-size: 1.2rem;
 
   a {
-    color: white;
+    color: #FF6F61; /* 主色 */
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
+      color: #FFC75F; /* 點綴色 */
     }
   }
 `;
 
 const ContactInfo = () => {
   return (
-    <Section style={{ background: 'linear-gradient(45deg, #f8a5c2, #f7d794)' }}>
+    <Section bgColor="#E6E6FF"> {/* 淡紫羅蘭色 */}
       <SectionTitle>
         <Phone /> 聯絡資訊
       </SectionTitle>
