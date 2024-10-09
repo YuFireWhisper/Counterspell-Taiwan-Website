@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+// src/components/QASection.js
+
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { HelpCircle } from 'lucide-react';
+import SectionAnimation from './SectionAnimation';
 import content from './content';
 
 const QASectionStyled = styled.section`
   background: linear-gradient(45deg, #20bf6b, #0fb9b1);
-  margin-bottom: 30px;
+    margin-bottom: 30px;
   background-color: transparent;
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -76,43 +79,7 @@ const Answer = styled.p`
   margin-left: 20px;
 `;
 
-const QAItem = styled.div`
-  opacity: ${(props) => (props.isVisible ? 1 : 0)};
-  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(50px)')};
-  transition: transform 0.3s ease, opacity 0.3s ease;
-`;
-
-// 自定義滾動觸發鉤子
-const useScrollTrigger = (threshold = 0.5) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef(null);
-
-  const handleScroll = () => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    const { top, bottom } = element.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if (top <= windowHeight * threshold && bottom >= 0) {
-      setIsVisible(true);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // 初始化檢測
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return { isVisible, elementRef };
-};
-
 const QASection = () => {
-  const { isVisible, elementRef } = useScrollTrigger(0.7); // 滾動到視口 70% 處觸發
   const [activeQAIndices, setActiveQAIndices] = useState({});
 
   const toggleQA = (index) => {
@@ -123,13 +90,13 @@ const QASection = () => {
   };
 
   return (
-    <QASectionStyled ref={elementRef}>
+    <QASectionStyled>
       <SectionTitle>
         <HelpCircle /> 常見問答
       </SectionTitle>
       <QAContent>
         {(content.qa || []).map((qaItem, index) => (
-          <QAItem key={index} isVisible={isVisible}>
+          <SectionAnimation key={index}>
             <div>
               <Question
                 className={activeQAIndices[index] ? 'active' : ''}
@@ -139,7 +106,7 @@ const QASection = () => {
               </Question>
               {activeQAIndices[index] && <Answer>{qaItem.answer}</Answer>}
             </div>
-          </QAItem>
+          </SectionAnimation>
         ))}
       </QAContent>
     </QASectionStyled>

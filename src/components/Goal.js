@@ -1,27 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+// src/components/Goal.js
+
+import React from 'react';
 import styled from 'styled-components';
 import { Award } from 'lucide-react';
-import { SectionTitle } from './Section';
-
-// 目標內容網格
-const GoalSection = styled.section`
-  background: linear-gradient(45deg, #ff9ff3, #feca57);
-  margin-bottom: 30px;
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  will-change: background, transform;
-  transition: background 0.5s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import { Section, SectionTitle } from './Section'; // 引入通用的 Section 和 SectionTitle
+import { useInView } from 'react-intersection-observer';
+import { useSpring, animated } from '@react-spring/web';
 
 // 目標內容包裝
 const GoalsContent = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 20px;
   justify-items: center;
   width: 100%;
@@ -35,12 +24,11 @@ const GoalItem = styled.div`
   padding: 15px;
   border-radius: 15px;
   color: white;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s ease;
   will-change: transform, opacity;
-  width: 100%;
-  max-width: 300px;
-  opacity: ${(props) => (props.isVisible ? 1 : 0)};
-  transform: ${(props) => (props.isVisible ? 'translateY(0)' : 'translateY(50px)')};
+  max-width: 400px;
+  height: 160px;
+  margin: 0 20px;
 
   &:hover {
     transform: scale(1.05);
@@ -59,53 +47,44 @@ const GoalItem = styled.div`
   }
 `;
 
-// 自定義滾動觸發鉤子
-const useScrollTrigger = (threshold = 0.5) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef(null);
+// SectionAnimation 組件，用於進場動畫
+const SectionAnimation = React.memo(({ children }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
-  const handleScroll = () => {
-    const element = elementRef.current;
-    if (!element) return;
+  const animation = useSpring({
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0px)' : 'translateY(50px)',
+    config: { tension: 120, friction: 14 },
+  });
 
-    const { top, bottom } = element.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if (top <= windowHeight * threshold && bottom >= 0) {
-      setIsVisible(true);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // 初始化檢測
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return { isVisible, elementRef };
-};
+  return (
+    <animated.div ref={ref} style={animation}>
+      {children}
+    </animated.div>
+  );
+});
 
 // Goals 組件
 const Goals = ({ goals }) => {
-  const { isVisible, elementRef } = useScrollTrigger(0.7); // 滾動到視口 70% 處觸發
-
   return (
-    <GoalSection ref={elementRef}>
+    <Section style={{ background: 'linear-gradient(45deg, #ff9ff3, #feca57)' }}>
       <SectionTitle>
         <Award /> 活動目標
       </SectionTitle>
       <GoalsContent>
         {goals.map((goal, index) => (
-          <GoalItem key={index} isVisible={isVisible}>
-            <h3>{goal.title}</h3>
-            <p>{goal.description}</p>
-          </GoalItem>
+          <SectionAnimation key={index}>
+            <GoalItem>
+              <h3>{goal.title}</h3>
+              <p>{goal.description}</p>
+            </GoalItem>
+          </SectionAnimation>
         ))}
       </GoalsContent>
-    </GoalSection>
+    </Section>
   );
 };
 

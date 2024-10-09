@@ -9,17 +9,17 @@ const Nav = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  height: 65px;
   background: rgba(20, 20, 20, 0.9);
   backdrop-filter: blur(10px);
-  padding: 0 40px; // 移除上下內邊距
+  padding: 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1001;
   transform: ${(props) => (props.show ? 'translateY(0)' : 'translateY(-100%)')};
   transition: transform 0.3s ease-in-out;
-  box-sizing: border-box; // 確保 padding 不會增加元素的總寬度
+  box-sizing: border-box;
 `;
 
 // 標誌或網站名稱

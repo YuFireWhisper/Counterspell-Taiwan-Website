@@ -1,7 +1,10 @@
+// src/components/EventInfo.js
+
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Calendar, Users, MapPin } from 'lucide-react';
 import content from './content';
+import { Section } from './Section'; // 引入通用的 Section
 
 const EventInfoContainer = styled.div`
   display: flex;
@@ -45,63 +48,61 @@ const EventInfoItem = styled.div`
   }
 `;
 
-// 自定義滾動觸發鉤子
-const useScrollTrigger = (threshold = 0.5) => {
+const EventInfo = () => {
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef(null);
 
-  const handleScroll = () => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    const { top, bottom } = element.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if (top <= windowHeight * threshold && bottom >= 0) {
-      setIsVisible(true);
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // 初始化檢測
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.7, // 觸發閾值為 70%
+      }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      if (observer && observer.disconnect) {
+        observer.disconnect();
+      }
     };
   }, []);
 
-  return { isVisible, elementRef };
-};
-
-const EventInfo = () => {
-  const { isVisible, elementRef } = useScrollTrigger(0.7); // 滾動到視口 70% 處觸發
-
   return (
-    <EventInfoContainer ref={elementRef}>
-      {/* 活動日期 */}
-      <EventInfoItem isVisible={isVisible}>
-        <Calendar size={40} />
-        <h3>活動日期</h3>
-        <p>{content.eventDetails?.date || '2024年12月1日 - 12月2日'}</p>
-      </EventInfoItem>
+    <Section ref={elementRef} style={{ background: 'linear-gradient(45deg, #ff9ff3, #feca57)' }}>
+      <EventInfoContainer>
+        {/* 活動日期 */}
+        <EventInfoItem isVisible={isVisible}>
+          <Calendar size={40} />
+          <h3>活動日期</h3>
+          <p>{content.eventDetails?.date || '2024年12月1日 - 12月2日'}</p>
+        </EventInfoItem>
 
-      {/* 活動地點 */}
-      <EventInfoItem isVisible={isVisible}>
-        <MapPin size={40} />
-        <h3>活動地點</h3>
-        <p>{content.eventDetails?.location || '台北市信義區信義路五段7號'}</p>
-      </EventInfoItem>
+        {/* 活動地點 */}
+        <EventInfoItem isVisible={isVisible}>
+          <MapPin size={40} />
+          <h3>活動地點</h3>
+          <p>{content.eventDetails?.location || '台北市信義區信義路五段7號'}</p>
+        </EventInfoItem>
 
-      {/* 主辦單位 */}
-      <EventInfoItem isVisible={isVisible}>
-        <Users size={40} />
-        <h3>主辦單位</h3>
-        <p>{content.eventDetails?.organizer || 'HackIt'}</p>
-        <h3>協辦單位</h3>
-        <p>{content.eventDetails?.coOrganizer || 'Hack Club'}</p>
-      </EventInfoItem>
-    </EventInfoContainer>
+        {/* 主辦單位 */}
+        <EventInfoItem isVisible={isVisible}>
+          <Users size={40} />
+          <h3>主辦單位</h3>
+          <p>{content.eventDetails?.organizer || 'HackIt'}</p>
+          <h3>協辦單位</h3>
+          <p>{content.eventDetails?.coOrganizer || 'Hack Club'}</p>
+        </EventInfoItem>
+      </EventInfoContainer>
+    </Section>
   );
 };
 
